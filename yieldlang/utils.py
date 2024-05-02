@@ -6,6 +6,13 @@ T = TypeVar("T")
 
 
 def iterable(obj: Any):
+    """
+    Check if an object is iterable.
+    :param obj: The object to check.
+    :type obj: Any
+    :return: True if the object is iterable, False otherwise.
+    :rtype: bool
+    """
     try:
         iter(obj)
     except TypeError:

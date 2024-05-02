@@ -36,6 +36,8 @@ release = VERSION
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "autoapi.extension",
     "sphinx.ext.napoleon",
     "myst_parser",
     "sphinx.ext.intersphinx",
@@ -43,6 +45,10 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx_copybutton",
     "sphinx_autodoc_typehints",
+]
+
+autoapi_dirs = [
+    os.path.abspath("../../yieldlang/"),
 ]
 
 # Tell myst-parser to assign header anchors for h1-h3.
@@ -118,4 +124,6 @@ class ShutupSphinxAutodocTypehintsFilter(logging.Filter):
         return True
 
 
-logging.getLogger("sphinx.sphinx_autodoc_typehints").addFilter(ShutupSphinxAutodocTypehintsFilter())
+logging.getLogger("sphinx.sphinx_autodoc_typehints").addFilter(
+    ShutupSphinxAutodocTypehintsFilter()
+)

@@ -5,7 +5,7 @@ Installation
 
 ## Installing with `pip`
 
-**YieldLang** is available [on PyPI](https://pypi.org/project/yieldlang/). Just run
+**YieldLang** is available [on PyPI](https://pypi.org/project/yieldlang/). Just run:
 
 ```bash
 pip install yieldlang

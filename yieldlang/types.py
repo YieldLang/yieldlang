@@ -5,6 +5,7 @@ EmptyString = ""
 
 
 class Token(Enum):
+    """Token enumeration for the lexer."""
     EOF = -1
     Empty = 0
 

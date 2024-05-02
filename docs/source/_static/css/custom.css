@@ -1,0 +1,14 @@
+.sidebar-brand-text {
+    font-family: "Monaspace Neon", monospace;
+    font-weight: 800;
+}
+
+.sidebar-brand-text::before {
+    content: '';
+    background-image: url('../ico.svg');
+    display: block;
+    margin-bottom: 0.5em;
+    background-size: cover;
+    width: 4em;
+    height: 4em;
+}

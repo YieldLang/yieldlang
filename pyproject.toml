@@ -32,7 +32,7 @@ Changelog = "https://github.com/yieldlang/yieldlang/blob/main/docs/source/CHANGE
 [project.optional-dependencies]
 dev = [
     "ruff",
-    "mypy>=1.0,<1.7",
+    "mypy>=1.0,<1.11",
     "black>=23.0,<24.0",
     "isort>=5.12,<5.13",
     "pytest",

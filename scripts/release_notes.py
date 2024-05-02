@@ -22,8 +22,6 @@ def get_change_log_notes() -> str:
     current_section_notes: List[str] = []
     with open("docs/source/CHANGELOG.md") as changelog:
         for line in changelog:
-            print(line)
-            print(f"## [{TAG}]")
             if line.startswith("## "):
                 if line.startswith("## Unreleased"):
                     continue

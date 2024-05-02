@@ -20,7 +20,7 @@ git clone https://github.com/yieldlang/yieldlang.git
 cd yieldlang
 ```
 
-Then run
+Then run:
 
 ```bash
 pip install -e .

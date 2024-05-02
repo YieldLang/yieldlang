@@ -8,10 +8,12 @@ Empty string constant.
 
 
 class Token(Enum):
-    """Token enumeration for the generator."""
+    """
+    Token enumeration for the generator.
+    """
 
-    EOF = 0
-    Empty = 1
+    Empty = 0
+    EOF = 1
 
 
 Strable: TypeAlias = str | int | float | bool

@@ -11,6 +11,8 @@ YieldLang is a meta-language for LLMs to generate structured information.
 ## Develop
 
 ```bash
+isort .
+black .
 make run-checks
 make build
 make docs

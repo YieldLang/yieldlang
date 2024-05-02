@@ -35,9 +35,9 @@ release = VERSION
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "autoapi.extension",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    "autoapi.extension",
     "sphinx.ext.napoleon",
     "myst_parser",
     "sphinx.ext.intersphinx",
@@ -124,6 +124,4 @@ class ShutupSphinxAutodocTypehintsFilter(logging.Filter):
         return True
 
 
-logging.getLogger("sphinx.sphinx_autodoc_typehints").addFilter(
-    ShutupSphinxAutodocTypehintsFilter()
-)
+logging.getLogger("sphinx.sphinx_autodoc_typehints").addFilter(ShutupSphinxAutodocTypehintsFilter())

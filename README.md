@@ -15,6 +15,9 @@
   <a href="https://github.com/YieldLang/yieldlang/commits/main/">
     <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/yieldlang/yieldlang">
   </a>
+  <a href="https://pypi.org/project/yieldlang/">
+    <img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang">
+  </a>
 </p>
 
 YieldLang is a meta-language for LLMs to generate structured information.

@@ -8,6 +8,14 @@ YieldLang is a meta-language for LLMs to generate structured information.
 
 **Work in progress now.**
 
+## Develop
+
+```bash
+make run-checks
+make build
+make docs
+```
+
 ## Packages
 
 - Based on template https://github.com/allenai/python-package-template

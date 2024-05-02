@@ -1,5 +1,15 @@
+@import url("https://cdn.jsdelivr.net/npm/monaspace-font@0.0.2/xenon.css");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans");
+
+body {
+    --font-stack: "Noto Sans", "Source Han Sans", -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+        sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    --font-stack--monospace: "Monaspace Xenon", "SFMono-Regular", Menlo, Consolas,
+        Monaco, Liberation Mono, Lucida Console, monospace;
+}
+
 .sidebar-brand-text {
-    font-family: "Monaspace Neon", monospace;
+    font-family: var(--font-stack--monospace);
     font-weight: 800;
 }
 
@@ -11,4 +21,20 @@
     background-size: cover;
     width: 4em;
     height: 4em;
+}
+
+[data-theme="dark"] .sidebar-brand-text::before {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+@media (prefers-color-scheme: dark) {
+    [data-theme="auto"] .sidebar-brand-text::before {
+        filter: invert(1) hue-rotate(180deg);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    [data-theme="auto"] .sidebar-brand-text::before {
+        filter: none;
+    }
 }

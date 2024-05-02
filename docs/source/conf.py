@@ -23,7 +23,7 @@ from yieldlang import VERSION, VERSION_SHORT  # noqa: E402
 # -- Project information -----------------------------------------------------
 
 project = "yieldlang"
-copyright = f"{datetime.today().year}, HK-SHAO"
+copyright = f"{datetime.today().year} HK-SHAO. All Rights Reserved."
 author = "HK-SHAO"
 version = VERSION_SHORT
 release = VERSION
@@ -88,7 +88,7 @@ typehints_defaults = "comma"
 #
 html_theme = "furo"
 
-html_title = f"YieldLang v{VERSION}"
+html_title = f"YieldLang <br/>v{VERSION}"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

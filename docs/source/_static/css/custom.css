@@ -22,19 +22,3 @@ body {
     width: 4em;
     height: 4em;
 }
-
-[data-theme="dark"] .sidebar-brand-text::before {
-    filter: invert(1) hue-rotate(180deg);
-}
-
-@media (prefers-color-scheme: dark) {
-    [data-theme="auto"] .sidebar-brand-text::before {
-        filter: invert(1) hue-rotate(180deg);
-    }
-}
-
-@media (prefers-color-scheme: light) {
-    [data-theme="auto"] .sidebar-brand-text::before {
-        filter: none;
-    }
-}

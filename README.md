@@ -10,4 +10,4 @@ YieldLang is a meta-language for LLMs to generate structured information.
 
 ## Packages
 
-- Based on template https://github.com/microsoft/python-package-template
+- Based on template https://github.com/allenai/python-package-template

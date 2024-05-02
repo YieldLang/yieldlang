@@ -15,7 +15,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 authors = [
-    {name = "Allen Institute for Artificial Intelligence", email = "contact@allenai.org"}
+    {name = "HK-SHAO", email = "hk-shao@outlook.com"}
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -26,13 +26,13 @@ license = {file = "LICENSE"}
 [project.urls]
 Homepage = "https://github.com/yieldlang/yieldlang"
 Repository = "https://github.com/yieldlang/yieldlang"
-Changelog = "https://github.com/yieldlang/yieldlang/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/yieldlang/yieldlang/blob/main/docs/source/CHANGELOG.md"
 # Documentation = "https://yieldlang.readthedocs.io/"
 
 [project.optional-dependencies]
 dev = [
     "ruff",
-    "mypy>=1.0,<1.5",
+    "mypy>=1.0,<1.7",
     "black>=23.0,<24.0",
     "isort>=5.12,<5.13",
     "pytest",
@@ -43,7 +43,7 @@ dev = [
     "setuptools",
     "wheel",
     "Sphinx>=4.3.0,<7.1.0",
-    "furo==2023.7.26",
+    "furo==2023.9.10",
     "myst-parser>=1.0,<2.1",
     "sphinx-copybutton==0.5.2",
     "sphinx-autobuild==2021.3.14",
@@ -95,7 +95,7 @@ multi_line_output = 3
 reportPrivateImportUsage = false
 
 [tool.ruff]
-line-length = 115
+line-length = 79
 target-version = "py39"
 
 [tool.ruff.lint.per-file-ignores]

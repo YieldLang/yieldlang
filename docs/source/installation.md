@@ -1,11 +1,11 @@
 Installation
 ============
 
-**yieldlang** supports Python >= 3.8.
+**YieldLang** supports `python >= 3.8`.
 
 ## Installing with `pip`
 
-**yieldlang** is available [on PyPI](https://pypi.org/project/yieldlang/). Just run
+**YieldLang** is available [on PyPI](https://pypi.org/project/yieldlang/). Just run
 
 ```bash
 pip install yieldlang
@@ -13,7 +13,7 @@ pip install yieldlang
 
 ## Installing from source
 
-To install **yieldlang** from source, first clone [the repository](https://github.com/yieldlang/yieldlang):
+To install **YieldLang** from source, first clone [the repository](https://github.com/yieldlang/yieldlang):
 
 ```bash
 git clone https://github.com/yieldlang/yieldlang.git

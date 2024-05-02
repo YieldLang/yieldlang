@@ -5,7 +5,7 @@ from yieldlang.version import VERSION
 
 
 def main():
-    changelog = Path("CHANGELOG.md")
+    changelog = Path("docs/source/CHANGELOG.md")
 
     with changelog.open() as f:
         lines = f.readlines()

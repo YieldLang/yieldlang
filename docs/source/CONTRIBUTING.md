@@ -1,1 +1,1 @@
-C:/MYD/YieldLang-Project/yieldlang/CONTRIBUTING.md
+../../CONTRIBUTING.md

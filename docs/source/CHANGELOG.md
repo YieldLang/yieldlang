@@ -1,1 +1,1 @@
-C:/MYD/YieldLang-Project/yieldlang/CHANGELOG.md
+../../CHANGELOG.md

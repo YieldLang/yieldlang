@@ -24,7 +24,7 @@ license = { file = "LICENSE" }
 [project.urls]
 Homepage = "https://github.com/yieldlang/yieldlang"
 Repository = "https://github.com/yieldlang/yieldlang"
-Changelog = "https://github.com/yieldlang/yieldlang/blob/main/docs/source/CHANGELOG.md"
+Changelog = "https://github.com/yieldlang/yieldlang/blob/main/CHANGELOG.md"
 # Documentation = "https://yieldlang.readthedocs.io/"
 
 [project.optional-dependencies]

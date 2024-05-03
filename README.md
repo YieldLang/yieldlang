@@ -24,13 +24,25 @@ pip install yieldlang
 
 ## Develop
 
+### Clone
+
+In order for `git` to create symbolic links correctly, on Windows you have to run as administrator:
+
 ```bash
-isort .
-black .
+git clone -c core.symlinks=true https://github.com/YieldLang/yieldlang.git
+```
+
+### Make
+
+```bash
 make run-checks
 make build
 make docs
 ```
+
+### Release
+
+- Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
 ## Packages
 

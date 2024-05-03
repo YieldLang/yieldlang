@@ -127,6 +127,10 @@ GitHub Repository <https://github.com/yieldlang/yieldlang>
 </svg>
 </p>
 
+YieldLang is a meta-language for LLMs to generate structured information.
+
+**Work in progress now.**
+
 
 ## Indices and tables
 

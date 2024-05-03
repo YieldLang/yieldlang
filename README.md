@@ -44,6 +44,6 @@ make docs
 
 - Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
-## Packages
+## Acknowledgements
 
 - Based on template https://github.com/allenai/python-package-template

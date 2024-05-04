@@ -1,12 +1,15 @@
 from typing import Iterable
 
-from .constants import EmptyString, Token
-from .types import (
+from yieldlang.constants import EmptyString, Token
+from yieldlang.sampler import Sampler
+from yieldlang.types import (
     NonTerminal,
     Symbol,
+    SymbolProxy,
     is_callable,
     is_non_terminal,
     is_strable,
+    is_symbol_proxy,
     is_token,
 )
 
@@ -24,11 +27,13 @@ class TextGenerator:
         """
         raise NotImplementedError
 
-    def __init__(self, sampler):
+    def __init__(self, sampler: Sampler | None = None) -> None:
         """
         Initialize the generator with a sampler.
         """
-        self.sample = sampler
+        if sampler is None:
+            sampler = Sampler.default()
+        self.__sampler = sampler
 
     def __iter__(self) -> Iterable[str]:
         """
@@ -80,6 +85,19 @@ class TextGenerator:
             case _:
                 raise ValueError(f"Invalid token: {token}")
 
+    def __flatten_symbol_proxy(self, proxy: SymbolProxy) -> Iterable[str]:
+        """
+        Flatten a symbol proxy.
+        """
+        try:
+            fn = getattr(self.__sampler, proxy.fn.__name__)
+            symbol: Symbol = fn(*proxy.args, **proxy.kwargs)
+        except (NotImplementedError, AttributeError):
+            ff = fn.__name__
+            cc = self.__sampler.__class__.__name__
+            raise NotImplementedError(f"{ff} is not implemented in {cc}")
+        yield from self.__flatten(symbol)
+
     def __flatten(self, symbol: Symbol) -> Iterable[str]:
         """
         Flatten a symbol.
@@ -90,6 +108,8 @@ class TextGenerator:
             yield EmptyString
         elif is_callable(symbol):
             yield from self.__flatten(symbol())
+        elif is_symbol_proxy(symbol):
+            yield from self.__flatten_symbol_proxy(symbol)
         elif is_non_terminal(symbol):
             yield from self.__flatten_non_terminal(symbol)
         elif is_token(symbol):

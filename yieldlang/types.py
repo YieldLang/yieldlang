@@ -19,10 +19,30 @@ NonTerminal: TypeAlias = Generator[Union["Symbol"], str, None]
 Type alias for a non-terminal type.
 """
 
-Symbol: TypeAlias = Terminal | NonTerminal | Callable[[], "Symbol"]
+Symbol: TypeAlias = (
+    Terminal | NonTerminal | "SymbolProxy" | Callable[[], "Symbol"]
+)
 """
 Type alias for a symbol type.
 """
+
+
+class SymbolProxy:
+    """
+    A proxy for a symbol.
+    """
+
+    def __init__(self, fn: Callable, *args: Symbol, **kwargs) -> None:
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+
+
+def is_symbol_proxy(obj: Any) -> TypeGuard[SymbolProxy]:
+    """
+    Check if an object is a symbol proxy.
+    """
+    return isinstance(obj, SymbolProxy)
 
 
 def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:

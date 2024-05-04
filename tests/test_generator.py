@@ -1,4 +1,4 @@
-from yieldlang.constants import EmptyString
+from yieldlang.constants import EmptyString, Token
 from yieldlang.generator import TextGenerator
 
 
@@ -34,6 +34,26 @@ def test_y_seq_eq_join_seq():
     EmptyString.join(TestGen(...).__iter__())
 
 
+def test_y_eos():
+    class TestGen(TextGenerator):
+        def top(self):
+            a = yield ("A", "B", "C", Token.EOS, "D", "E", "F")
+            assert a == "ABC"
+
+            b = yield self.abc
+            assert b == "ABCF"
+
+        def abc(self):
+            yield "AB"
+            yield ("C", Token.EOS, "D", "E")
+            yield "F"
+            yield Token.EOS
+            yield "G"
+
+    EmptyString.join(TestGen(...).__iter__())
+
+
 if __name__ == "__main__":
     test_y_a_eq_a()
     test_y_seq_eq_join_seq()
+    test_y_eos()

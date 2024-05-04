@@ -49,11 +49,15 @@ class TextGenerator:
         """
         if not hasattr(nt, "send"):
             for symbol in nt:
+                if symbol is Token.EOS:
+                    break
                 yield from self.__flatten(symbol)
         else:
             try:
                 symbol = next(nt)
                 while True:
+                    if symbol is Token.EOS:
+                        break
                     str_list: list[str] = []
                     for s in self.__flatten(symbol):
                         yield s
@@ -66,13 +70,12 @@ class TextGenerator:
         """
         Flatten a token.
         """
-        match token:
-            case Token.EOF:
-                raise EOFError
-            case Token.Empty:
-                yield EmptyString
-            case _:
-                raise ValueError(f"Invalid token: {token}")
+        if token is Token.EOF:
+            raise EOFError
+        elif token is Token.Empty:
+            yield EmptyString
+        else:
+            raise ValueError(f"Invalid token: {token}")
 
     def __flatten(self, symbol: Symbol) -> Iterable[str]:
         """

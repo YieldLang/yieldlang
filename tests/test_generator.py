@@ -17,6 +17,20 @@ def test_y_seq_eq_join_seq():
             a = yield ("A", "B", "C")
             assert a == "ABC"
 
+            b = yield self.abd
+            assert b == "abd"
+
+            c = yield list("ABCD")
+            assert c == "ABCD"
+
+            d = yield ("1", self.abd, "2")
+            assert d == "1abd2"
+
+        def abd(self):
+            yield "a"
+            yield "b"
+            yield "d"
+
     EmptyString.join(TestGen(...).__iter__())
 
 

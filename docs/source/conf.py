@@ -95,7 +95,11 @@ html_title = f"YieldLang v{VERSION}"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-html_css_files = ["css/custom.css"]
+html_css_files = [
+    "css/custom.css",
+    "https://cdn.jsdelivr.net/npm/monaspace-font@0.0.2/xenon.css",
+    "https://fonts.googleapis.com/css?family=Noto+Sans",
+]
 
 html_favicon = "_static/favicon.ico"
 
@@ -112,6 +116,10 @@ html_theme_options = {
             "class": "",
         },
     ],
+    "light_css_variables": {
+        "font-stack": '"Noto Sans", "Source Han Sans", -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
+        "font-stack--monospace": '"Monaspace Xenon", "SFMono-Regular", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace',
+    },
 }
 
 # -- Hack to get rid of stupid warnings from sphinx_autodoc_typehints --------

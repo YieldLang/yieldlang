@@ -15,9 +15,18 @@ overview
 
 CHANGELOG
 CONTRIBUTING
-License <https://raw.githubusercontent.com/yieldlang/yieldlang/main/LICENSE>
+License <https://github.com/YieldLang/yieldlang/blob/main/LICENSE>
 GitHub Repository <https://github.com/yieldlang/yieldlang>
 ```
+
+```{toctree}
+:hidden:
+:caption: API
+
+genindex
+modindex
+```
+
 <p align="center">
 <svg class="typst-doc" viewBox="0 0 45.080000000000005 20" width="38.2%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
     <style>

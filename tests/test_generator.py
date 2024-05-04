@@ -8,52 +8,74 @@ def test_y_a_eq_a():
             a = yield "A"
             assert a == "A"
 
-    EmptyString.join(TestGen(...).__iter__())
+    ret = EmptyString.join(TestGen(...).__iter__())
+    assert ret == "A"
 
 
 def test_y_seq_eq_join_seq():
     class TestGen(TextGenerator):
         def top(self):
-            a = yield ("A", "B", "C")
-            assert a == "ABC"
+            abc = yield ("A", "B", "C")
+            assert abc == "ABC"
 
-            b = yield self.abd
-            assert b == "abd"
+            abd = yield self.abd
+            assert abd == "abd"
 
-            c = yield list("ABCD")
-            assert c == "ABCD"
+            abcd = yield list("ABCD")
+            assert abcd == "ABCD"
 
-            d = yield ("1", self.abd, "2")
-            assert d == "1abd2"
+            xabdy = yield ("x", self.abd, "y")
+            assert xabdy == "xabdy"
 
         def abd(self):
             yield "a"
             yield "b"
             yield "d"
 
-    EmptyString.join(TestGen(...).__iter__())
+    ret = EmptyString.join(TestGen(...).__iter__())
+    assert ret == "ABCabdABCDxabdy"
 
 
 def test_y_eos():
     class TestGen(TextGenerator):
         def top(self):
-            a = yield ("A", "B", "C", Token.EOS, "D", "E", "F")
-            assert a == "ABC"
+            abc = yield ("A", "B", "C", Token.EOS, "D", "E", "F")
+            assert abc == "ABC"
 
-            b = yield self.abc
-            assert b == "ABCF"
+            abcf = yield self.abcf
+            assert abcf == "ABCF"
 
-        def abc(self):
+            yield (abcf, abc, Token.EOS, "666")
+
+        def abcf(self):
             yield "AB"
             yield ("C", Token.EOS, "D", "E")
             yield "F"
             yield Token.EOS
             yield "G"
 
-    EmptyString.join(TestGen(...).__iter__())
+    ret = EmptyString.join(TestGen(...).__iter__())
+    assert ret == "ABCABCF" + "ABCF" + "ABC"
+
+
+def test_y_strbale():
+    class TestGen(TextGenerator):
+        def top(self):
+            a = yield 3.14
+            assert a == "3.14"
+
+            b = yield 15926
+            assert b == "15926"
+
+            c = yield "5"
+            assert c == "5"
+
+    ret = EmptyString.join(TestGen(...).__iter__())
+    assert ret == "3.14159265"
 
 
 if __name__ == "__main__":
     test_y_a_eq_a()
     test_y_seq_eq_join_seq()
     test_y_eos()
+    test_y_strbale()

@@ -12,6 +12,8 @@
   <a href="https://pypi.org/project/yieldlang/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang"/></a>
 </p>
 
+## [Read the docs](https://docs.yieldlang.com/)
+
 YieldLang is a meta-language for LLMs to generate structured information.
 
 **Work in progress now.**

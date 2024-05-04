@@ -23,31 +23,7 @@ Type alias for a symbol type.
 """
 
 
-def is_strable(symbol: Any) -> TypeGuard[Strable]:
-    """
-    Check if a symbol is stringable.
-
-    :param symbol: The symbol to check.
-    :type symbol: Any
-    :return: `True` if the symbol is stringable, `False` otherwise.
-    :rtype: bool
-    """
-    return isinstance(symbol, (str, int, float))
-
-
-def is_token(symbol: Any) -> TypeGuard[Token]:
-    """
-    Check if a symbol is a token.
-
-    :param symbol: The symbol to check.
-    :type symbol: Any
-    :return: `True` if the symbol is a token, `False` otherwise.
-    :rtype: bool
-    """
-    return isinstance(symbol, Token)
-
-
-def is_non_terminal(symbol: Any) -> TypeGuard[NonTerminal]:
+def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
     """
     Check if a symbol is a non-terminal.
 
@@ -56,10 +32,10 @@ def is_non_terminal(symbol: Any) -> TypeGuard[NonTerminal]:
     :return: `True` if the symbol is a non-terminal, `False` otherwise.
     :rtype: bool
     """
-    return iterable(symbol)
+    return is_iterable(symbol)
 
 
-def is_callable(symbol: Any) -> TypeGuard[Callable[[], Symbol]]:
+def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
     """
     Check if a symbol is a callable.
 
@@ -71,7 +47,31 @@ def is_callable(symbol: Any) -> TypeGuard[Callable[[], Symbol]]:
     return callable(symbol)
 
 
-def iterable(obj: Any) -> bool:
+def is_strable(obj: Any) -> TypeGuard[Strable]:
+    """
+    Check if an object is stringable.
+
+    :param obj: The object to check.
+    :type obj: Any
+    :return: `True` if the object is stringable, `False` otherwise.
+    :rtype: bool
+    """
+    return isinstance(obj, (str, int, float))
+
+
+def is_token(obj: Any) -> TypeGuard[Token]:
+    """
+    Check if an object is a token.
+
+    :param obj: The object to check.
+    :type obj: Any
+    :return: `True` if the object is a token, `False` otherwise.
+    :rtype: bool
+    """
+    return isinstance(obj, Token)
+
+
+def is_iterable(obj: Any) -> bool:
     """
     Check if an object is iterable.
 

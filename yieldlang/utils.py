@@ -8,7 +8,7 @@ Type variable for generic types.
 """
 
 
-def iterable(obj: Any) -> bool:
+def is_iterable(obj: Any) -> bool:
     """
     Check if an object is iterable.
 

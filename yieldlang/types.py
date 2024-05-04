@@ -1,5 +1,7 @@
 from typing import Any, Callable, Generator, TypeAlias, TypeGuard, Union
 
+from yieldlang.utils import is_iterable
+
 from .constants import Token
 
 Strable: TypeAlias = str | int | float
@@ -69,19 +71,3 @@ def is_token(obj: Any) -> TypeGuard[Token]:
     :rtype: bool
     """
     return isinstance(obj, Token)
-
-
-def is_iterable(obj: Any) -> bool:
-    """
-    Check if an object is iterable.
-
-    :param obj: The object to check.
-    :type obj: Any
-    :return: `True` if the object is iterable, `False` otherwise.
-    :rtype: bool
-    """
-    try:
-        iter(obj)
-    except TypeError:
-        return False
-    return True

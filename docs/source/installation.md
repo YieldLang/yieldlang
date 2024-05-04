@@ -1,7 +1,7 @@
 Installation
 ============
 
-**YieldLang** supports `python >= 3.8`.
+**YieldLang** supports `python >= 3.10`.
 
 ## Installing with `pip`
 

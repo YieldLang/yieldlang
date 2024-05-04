@@ -15,7 +15,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 authors = [{ name = "HK-SHAO", email = "hk-shao@outlook.com" }]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
   # Add your own dependencies here
 ]

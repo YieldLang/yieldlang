@@ -70,12 +70,15 @@ class TextGenerator:
         """
         Flatten a token.
         """
-        if token is Token.EOF:
-            raise EOFError
-        elif token is Token.Empty:
-            yield EmptyString
-        else:
-            raise ValueError(f"Invalid token: {token}")
+        match token:
+            case Token.EOF:
+                raise EOFError
+            case Token.EOS:
+                raise StopIteration
+            case Token.Empty:
+                yield EmptyString
+            case _:
+                raise ValueError(f"Invalid token: {token}")
 
     def __flatten(self, symbol: Symbol) -> Iterable[str]:
         """

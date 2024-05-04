@@ -50,7 +50,9 @@ def get_commit_history() -> str:
     os.popen("git fetch --tags")
 
     # Get all tags sorted by version, latest first.
-    all_tags = os.popen("git tag -l --sort=-version:refname 'v*'").read().split("\n")
+    all_tags = (
+        os.popen("git tag -l --sort=-version:refname 'v*'").read().split("\n")
+    )
 
     # Out of `all_tags`, find the latest previous version so that we can collect all
     # commits between that version and the new version we're about to publish.
@@ -66,7 +68,9 @@ def get_commit_history() -> str:
             last_tag = tag
             break
     if last_tag is not None:
-        commits = os.popen(f"git log {last_tag}..{TAG} --oneline --first-parent").read()
+        commits = os.popen(
+            f"git log {last_tag}..{TAG} --oneline --first-parent"
+        ).read()
     else:
         commits = os.popen("git log --oneline --first-parent").read()
     return "## Commits\n\n" + commits

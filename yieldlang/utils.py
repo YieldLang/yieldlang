@@ -1,6 +1,6 @@
 from typing import Any, Iterable, TypeVar
 
-from .types import EmptyString, Token
+from .constants import EmptyString, Token
 
 T = TypeVar("T")
 """

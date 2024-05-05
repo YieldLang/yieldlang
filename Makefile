@@ -1,6 +1,7 @@
 .PHONY : docs
 docs :
 	rm -rf docs/build/
+	rm -rf docs/source/autoapi/
 	sphinx-autobuild -b html --watch yieldlang/ docs/source/ docs/build/
 
 .PHONY : run-checks

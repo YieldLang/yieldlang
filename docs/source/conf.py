@@ -77,6 +77,8 @@ napoleon_preprocess_types = False
 napoleon_attr_annotations = True
 napoleon_type_aliases: dict[str, str] = {}
 
+toc_object_entries_show_parents = "hide"
+
 # Tell myst-parser to assign header anchors for h1-h3.
 myst_heading_anchors = 3
 

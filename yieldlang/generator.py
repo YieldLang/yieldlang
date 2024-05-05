@@ -38,8 +38,11 @@ class TextGenerator:
 
     def __iter_symbol(self, symbol: Symbol) -> Iterable[str]:
         """Iterate over a symbol."""
-        for token in self.__flatten(symbol):
-            yield token
+        try:
+            for token in self.__flatten(symbol):
+                yield token
+        except EOFError:
+            pass
 
     def __flatten_non_terminal(self, nt: NonTerminal) -> Iterable[str]:
         """Flatten a non-terminal."""

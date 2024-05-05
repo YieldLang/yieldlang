@@ -59,6 +59,38 @@ def test_y_eos():
     assert ret == "ABCABCF" + "ABCF" + "ABC"
 
 
+def test_y_eof():
+    class TestGen(TextGenerator):
+        def top(self):
+            yield "A"
+            yield self.b
+            ce = yield (self.c, self.d, "E")
+            assert ce == "CE"
+            yield self.f
+            yield self.g
+
+        def b(self):
+            yield "B"
+
+        def c(self):
+            yield "C"
+
+        def d(self):
+            pass
+
+        def f(self):
+            yield "F"
+            yield Token.EOF
+            raise RuntimeError("This should not be reached")
+
+        def g(self):
+            yield "G"
+            raise RuntimeError("This should not be reached")
+
+    ret = EmptyString.join(TestGen().__iter__())
+    assert ret == "ABCEF"
+
+
 def test_y_strale():
     class TestGen(TextGenerator):
         def top(self):

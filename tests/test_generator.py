@@ -132,3 +132,4 @@ if __name__ == "__main__":
     test_y_eos()
     test_y_strale()
     test_y_select()
+    test_y_eof()

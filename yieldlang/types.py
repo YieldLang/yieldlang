@@ -18,11 +18,19 @@ NonTerminal: TypeAlias = Generator[Union["Symbol"], str, None]
 Type alias for a non-terminal type.
 """
 
-Symbol: TypeAlias = (
-    Terminal | NonTerminal | "SymbolProxy" | Callable[[], "Symbol"]
-)
+SymbolFn: TypeAlias = Callable[[], "Symbol"]
+"""
+Type alias for a symbol function type.
+"""
+
+Symbol: TypeAlias = Terminal | NonTerminal | SymbolFn | "SymbolProxy"
 """
 Type alias for a symbol type.
+"""
+
+SymbolProxyFn: TypeAlias = Callable[..., "SymbolProxy"]
+"""
+Type alias for a symbol proxy function type.
 """
 
 
@@ -31,7 +39,7 @@ class SymbolProxy:
     A proxy for a symbol.
     """
 
-    def __init__(self, fn: Callable, *args: Symbol, **kwargs) -> None:
+    def __init__(self, fn: SymbolProxyFn, *args: Symbol, **kwargs) -> None:
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
@@ -49,7 +57,7 @@ def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
     Check if a symbol is a non-terminal.
 
     :param symbol: The symbol to check.
-    :type symbol: Any
+    :type symbol: Symbol
     :return: `True` if the symbol is a non-terminal, `False` otherwise.
     :rtype: bool
     """
@@ -61,7 +69,7 @@ def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
     Check if a symbol is a callable.
 
     :param symbol: The symbol to check.
-    :type symbol: Any
+    :type symbol: Symbol
     :return: `True` if the symbol is a callable, `False` otherwise.
     :rtype: bool
     """

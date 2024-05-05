@@ -36,6 +36,7 @@ release = VERSION
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx_autodoc_typehints",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "myst_parser",
@@ -43,7 +44,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.doctest",
     "sphinx_copybutton",
-    "sphinx_autodoc_typehints",
     "autoapi.extension",
 ]
 
@@ -52,7 +52,14 @@ autoapi_dirs = [
 ]
 
 autoapi_add_toctree_entry = True
-autodoc_typehints = "description"
+autodoc_typehints = "signature"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
+python_use_shortname = True
+add_module_names = False
+typehints_fully_qualified = False
+typehints_defaults = "comma"
+always_use_bars_union = True
 
 # Tell myst-parser to assign header anchors for h1-h3.
 myst_heading_anchors = 3

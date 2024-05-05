@@ -3,7 +3,7 @@ from random import choice as rand_choice
 from yieldlang.types import Symbol
 
 
-class Sampler:
+class BaseSampler:
     """
     A sampler that sample a symbol from a set of symbols.
     """
@@ -25,7 +25,7 @@ class Sampler:
         return RandomSampler()
 
 
-class RandomSampler(Sampler):
+class RandomSampler(BaseSampler):
     def select(self, *args: Symbol) -> Symbol:
         """
         Randomly select a symbol from a set of symbols.

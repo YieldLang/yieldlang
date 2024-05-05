@@ -1,10 +1,11 @@
 from typing import Iterable
 
 from yieldlang.constants import EmptyString, Token
-from yieldlang.sampler import Sampler
+from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
     NonTerminal,
     Symbol,
+    SymbolFn,
     SymbolProxy,
     is_callable,
     is_non_terminal,
@@ -27,12 +28,12 @@ class TextGenerator:
         """
         raise NotImplementedError
 
-    def __init__(self, sampler: Sampler | None = None) -> None:
+    def __init__(self, sampler: BaseSampler | None = None) -> None:
         """
         Initialize the generator with a sampler.
         """
         if sampler is None:
-            sampler = Sampler.default()
+            sampler = BaseSampler.default()
         self.__sampler = sampler
 
     def __iter__(self) -> Iterable[str]:
@@ -90,7 +91,7 @@ class TextGenerator:
         Flatten a symbol proxy.
         """
         try:
-            fn = getattr(self.__sampler, proxy.fn.__name__)
+            fn: SymbolFn = getattr(self.__sampler, proxy.fn.__name__)
             symbol: Symbol = fn(*proxy.args, **proxy.kwargs)
         except (NotImplementedError, AttributeError):
             ff = fn.__name__

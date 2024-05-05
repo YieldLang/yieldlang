@@ -59,7 +59,7 @@ def test_y_eos():
     assert ret == "ABCABCF" + "ABCF" + "ABC"
 
 
-def test_y_strbale():
+def test_y_strale():
     class TestGen(TextGenerator):
         def top(self):
             a = yield 3.14
@@ -98,5 +98,5 @@ if __name__ == "__main__":
     test_y_a_eq_a()
     test_y_seq_eq_join_seq()
     test_y_eos()
-    test_y_strbale()
+    test_y_strale()
     test_y_select()

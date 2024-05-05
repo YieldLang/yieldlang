@@ -5,8 +5,8 @@
 :hidden:
 :caption: Getting started
 
-installation
 overview
+installation
 ```
 
 ```{toctree}
@@ -15,8 +15,6 @@ overview
 
 CHANGELOG
 CONTRIBUTING
-License <https://github.com/YieldLang/yieldlang/blob/main/LICENSE>
-GitHub Repository <https://github.com/yieldlang/yieldlang>
 ```
 
 ```{toctree}
@@ -25,6 +23,15 @@ GitHub Repository <https://github.com/yieldlang/yieldlang>
 
 genindex
 modindex
+autoapi/index
+```
+
+```{toctree}
+:hidden:
+:caption: Link
+
+License <https://github.com/YieldLang/yieldlang/blob/main/LICENSE>
+GitHub Repository <https://github.com/yieldlang/yieldlang>
 ```
 
 <p align="center">

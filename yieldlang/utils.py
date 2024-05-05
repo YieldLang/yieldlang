@@ -1,6 +1,6 @@
 from typing import Any, Iterable, TypeVar
 
-from .constants import EmptyString, Token
+from yieldlang.constants import EmptyString, Token
 
 T = TypeVar("T")
 """

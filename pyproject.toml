@@ -10,7 +10,7 @@ readme = "README.md"
 classifiers = [
   "Intended Audience :: Science/Research",
   "Development Status :: 3 - Alpha",
-  "License :: OSI Approved :: Apache Software License",
+  "License :: OSI Approved :: GNU General Public License v3",
   "Programming Language :: Python :: 3",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
@@ -22,10 +22,10 @@ dependencies = [
 license = { file = "LICENSE" }
 
 [project.urls]
-Homepage = "https://github.com/yieldlang/yieldlang"
+Homepage = "http://yieldlang.com"
 Repository = "https://github.com/yieldlang/yieldlang"
 Changelog = "https://github.com/yieldlang/yieldlang/blob/main/CHANGELOG.md"
-# Documentation = "https://yieldlang.readthedocs.io/"
+Documentation = "https://docs.yieldlang.com"
 
 [project.optional-dependencies]
 dev = [
@@ -51,7 +51,16 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-exclude = ["*.tests", "*.tests.*", "tests.*", "tests", "docs*", "scripts*"]
+exclude = [
+  "*.tests",
+  "*.tests.*",
+  "tests.*",
+  "tests",
+  "docs*",
+  "scripts*",
+  "build*",
+  "dist*",
+]
 
 [tool.setuptools]
 include-package-data = true
@@ -74,7 +83,8 @@ exclude = '''
     | \.vscode
     | \.venv
     | \bdist\b
-    | \bdoc\b
+    | \bdocs\b
+    | \bbuild\b
 )
 '''
 
@@ -97,6 +107,8 @@ target-version = "py39"
 ignore_missing_imports = true
 no_site_packages = true
 check_untyped_defs = true
+
+exclude = ["^build/", "^dist/"]
 
 [[tool.mypy.overrides]]
 module = "tests.*"

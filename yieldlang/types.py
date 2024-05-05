@@ -1,8 +1,7 @@
 from typing import Any, Callable, Generator, TypeAlias, TypeGuard, Union
 
+from yieldlang.constants import Token
 from yieldlang.utils import is_iterable
-
-from .constants import Token
 
 Strable: TypeAlias = str | int | float
 """

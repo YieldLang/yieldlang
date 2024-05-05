@@ -35,7 +35,6 @@ release = VERSION
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "autoapi.extension",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
@@ -45,11 +44,15 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx_copybutton",
     "sphinx_autodoc_typehints",
+    "autoapi.extension",
 ]
 
 autoapi_dirs = [
     os.path.abspath("../../yieldlang/"),
 ]
+
+autoapi_add_toctree_entry = True
+autodoc_typehints = "description"
 
 # Tell myst-parser to assign header anchors for h1-h3.
 myst_heading_anchors = 3

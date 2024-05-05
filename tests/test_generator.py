@@ -106,7 +106,7 @@ def test_y_strale():
     assert ret == "3.14159265"
 
 
-def test_muti_generator():
+def test_y_generator():
     class A(TextGenerator):
         def top(self):
             yield "A"
@@ -136,4 +136,4 @@ if __name__ == "__main__":
     test_y_eos()
     test_y_eof()
     test_y_strale()
-    test_muti_generator()
+    test_y_generator()

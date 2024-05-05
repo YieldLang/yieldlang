@@ -16,43 +16,33 @@ from yieldlang.types import (
 
 
 class TextGenerator:
-    """
-    A generator that generates text using a sampler.
-    """
+    """A generator that generates text using a sampler."""
 
     def top(self) -> Symbol:
-        """
-        Get the top symbol of the generator.
+        """Get the top symbol of the generator.
 
-        :warning: This method should be implemented by the subclass.
+        Warning:
+            This method should be implemented by the subclass.
         """
         raise NotImplementedError
 
     def __init__(self, sampler: BaseSampler | None = None) -> None:
-        """
-        Initialize the generator with a sampler.
-        """
+        """Initialize the generator with a sampler."""
         if sampler is None:
             sampler = BaseSampler.default()
         self.__sampler = sampler
 
     def __iter__(self) -> Iterable[str]:
-        """
-        Iterate over the generator.
-        """
+        """Iterate over the generator."""
         return self.__iter_symbol(self.top)
 
     def __iter_symbol(self, symbol: Symbol) -> Iterable[str]:
-        """
-        Iterate over a symbol.
-        """
+        """Iterate over a symbol."""
         for token in self.__flatten(symbol):
             yield token
 
     def __flatten_non_terminal(self, nt: NonTerminal) -> Iterable[str]:
-        """
-        Flatten a non-terminal.
-        """
+        """Flatten a non-terminal."""
         if not hasattr(nt, "send"):
             for symbol in nt:
                 if symbol is Token.EOS:
@@ -73,9 +63,7 @@ class TextGenerator:
                 pass
 
     def __flatten_token(self, token: Token) -> Iterable[str]:
-        """
-        Flatten a token.
-        """
+        """Flatten a token."""
         match token:
             case Token.EOF:
                 raise EOFError
@@ -87,9 +75,7 @@ class TextGenerator:
                 raise ValueError(f"Invalid token: {token}")
 
     def __flatten_symbol_proxy(self, proxy: SymbolProxy) -> Iterable[str]:
-        """
-        Flatten a symbol proxy.
-        """
+        """Flatten a symbol proxy."""
         try:
             fn: SymbolFn = getattr(self.__sampler, proxy.fn.__name__)
             symbol: Symbol = fn(*proxy.args, **proxy.kwargs)
@@ -100,9 +86,7 @@ class TextGenerator:
         yield from self.__flatten(symbol)
 
     def __flatten(self, symbol: Symbol) -> Iterable[str]:
-        """
-        Flatten a symbol.
-        """
+        """Flatten a symbol."""
         if is_strable(symbol):
             yield str(symbol)
         elif symbol is None:

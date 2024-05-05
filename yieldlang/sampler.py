@@ -4,30 +4,22 @@ from yieldlang.types import Symbol
 
 
 class BaseSampler:
-    """
-    A sampler that sample a symbol from a set of symbols.
-    """
+    """A sampler that sample a symbol from a set of symbols."""
 
     def __init__(self) -> None:
         pass
 
     def select(self, *args: Symbol) -> Symbol:
-        """
-        Select a symbol from a set of symbols.
-        """
+        """Select a symbol from a set of symbols."""
         raise NotImplementedError
 
     @staticmethod
     def default() -> "RandomSampler":
-        """
-        Get the default sampler.
-        """
+        """Get the default sampler."""
         return RandomSampler()
 
 
 class RandomSampler(BaseSampler):
     def select(self, *args: Symbol) -> Symbol:
-        """
-        Randomly select a symbol from a set of symbols.
-        """
+        """Randomly select a symbol from a set of symbols."""
         return rand_choice(args)

@@ -4,40 +4,26 @@ from yieldlang.constants import Token
 from yieldlang.utils import is_iterable
 
 Strable: TypeAlias = str | int | float
-"""
-Type alias for a stringable type.
-"""
+"""Type alias for a stringable type."""
 
 Terminal: TypeAlias = Strable | Token | None
-"""
-Type alias for a terminal type.
-"""
+"""Type alias for a terminal type."""
 
 NonTerminal: TypeAlias = Generator[Union["Symbol"], str, None]
-"""
-Type alias for a non-terminal type.
-"""
+"""Type alias for a non-terminal type."""
 
 SymbolFn: TypeAlias = Callable[[], "Symbol"]
-"""
-Type alias for a symbol function type.
-"""
+"""Type alias for a symbol function type."""
 
 Symbol: TypeAlias = Terminal | NonTerminal | SymbolFn | "SymbolProxy"
-"""
-Type alias for a symbol type.
-"""
+"""Type alias for a symbol type."""
 
 SymbolProxyFn: TypeAlias = Callable[..., "SymbolProxy"]
-"""
-Type alias for a symbol proxy function type.
-"""
+"""Type alias for a symbol proxy function type."""
 
 
 class SymbolProxy:
-    """
-    A proxy for a symbol.
-    """
+    """A proxy for a symbol."""
 
     def __init__(self, fn: SymbolProxyFn, *args: Symbol, **kwargs) -> None:
         self.fn = fn
@@ -46,55 +32,56 @@ class SymbolProxy:
 
 
 def is_symbol_proxy(obj: Any) -> TypeGuard[SymbolProxy]:
-    """
-    Check if an object is a symbol proxy.
+    """Check if an object is a symbol proxy.
+
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is a symbol proxy, ``False`` otherwise.
     """
     return isinstance(obj, SymbolProxy)
 
 
 def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
-    """
-    Check if a symbol is a non-terminal.
+    """Check if a symbol is a non-terminal.
 
-    :param symbol: The symbol to check.
-    :type symbol: Symbol
-    :return: `True` if the symbol is a non-terminal, `False` otherwise.
-    :rtype: bool
+    Args:
+        symbol (Symbol): The symbol to check.
+    Returns:
+        bool: ``True`` if the symbol is a non-terminal, ``False`` otherwise.
     """
+
     return is_iterable(symbol)
 
 
 def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
-    """
-    Check if a symbol is a callable.
+    """Check if a symbol is callable.
 
-    :param symbol: The symbol to check.
-    :type symbol: Symbol
-    :return: `True` if the symbol is a callable, `False` otherwise.
-    :rtype: bool
+    Args:
+        symbol (Symbol): The symbol to check.
+    Returns:
+        bool: ``True`` if the symbol is callable, ``False`` otherwise.
     """
     return callable(symbol)
 
 
 def is_strable(obj: Any) -> TypeGuard[Strable]:
-    """
-    Check if an object is stringable.
+    """Check if an object is stringable.
 
-    :param obj: The object to check.
-    :type obj: Any
-    :return: `True` if the object is stringable, `False` otherwise.
-    :rtype: bool
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is stringable, ``False`` otherwise.
     """
     return isinstance(obj, (str, int, float))
 
 
 def is_token(obj: Any) -> TypeGuard[Token]:
-    """
-    Check if an object is a token.
+    """Check if an object is a token.
 
-    :param obj: The object to check.
-    :type obj: Any
-    :return: `True` if the object is a token, `False` otherwise.
-    :rtype: bool
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is a token, ``False`` otherwise.
     """
     return isinstance(obj, Token)

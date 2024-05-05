@@ -77,13 +77,13 @@ When you're ready to contribute code to address an open issue, please follow the
     ```
     Then you can create and activate a new Python environment by running:
     ```bash
-    conda create -n yieldlang python=3.9
+    conda create -n yieldlang python=3.12
     conda activate yieldlang
     ```
     Once your virtual environment is activated, you can install your local clone in "editable mode" with
     ```bash
     pip install -U pip setuptools wheel
-    pip install -e .[dev]
+    pip install -e ".[dev]"
     ```
     The "editable mode" comes from the `-e` argument to `pip`, and essential just creates a symbolic link from the site-packages directory of your virtual environment to the source code in your local clone. That way any changes you make will be immediately reflected in your virtual environment.
 

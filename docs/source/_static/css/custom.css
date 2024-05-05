@@ -52,7 +52,7 @@ body {
 
     html,
     body {
-        font-size: clamp(8px, 3.5dvi, 1rem);
+        font-size: clamp(4px, 3.5dvi, 1rem);
     }
 }
 
@@ -77,4 +77,51 @@ h6 {
 
 p {
     text-wrap: pretty;
+}
+
+
+.theme-toggle-header {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    margin-inline: 1em;
+    padding: 0;
+}
+
+.page .header-center {
+    padding-left: 2.5rem;
+    font-weight: 600;
+    font-family: var(--font-stack--monospace);
+}
+
+.nav-overlay-icon .icon,
+.toc-overlay-icon .icon {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.toc-title {
+    font-weight: 600;
+}
+
+.theme-toggle {
+    z-index: 90;
+}
+
+.theme-toggle svg {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+@media (min-width: 67em) {
+    .theme-toggle-container {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+
+.toc-content-icon {
+    align-items: center;
 }

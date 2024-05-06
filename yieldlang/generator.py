@@ -5,7 +5,6 @@ from yieldlang.types import (
     EmptyString,
     NonTerminal,
     Symbol,
-    SymbolFn,
     SymbolProxy,
     Token,
     is_callable,
@@ -81,13 +80,7 @@ class TextGenerator:
 
     def __flatten_symbol_proxy(self, proxy: SymbolProxy) -> Iterable[str]:
         """Flatten a symbol proxy."""
-        try:
-            fn: SymbolFn = getattr(self.__sampler, proxy.fn.__name__)
-            symbol: Symbol = fn(*proxy.args, **proxy.kwargs)
-        except (NotImplementedError, AttributeError):
-            ff = fn.__name__
-            cc = self.__sampler.__class__.__name__
-            raise NotImplementedError(f"{ff} is not implemented in {cc}")
+        symbol = self.__sampler.process_symbol_proxy(proxy)
         yield from self.__flatten(symbol)
 
     def __flatten(self, symbol: Symbol) -> Iterable[str]:

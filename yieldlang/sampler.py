@@ -1,6 +1,6 @@
 from random import choice as rand_choice
 
-from yieldlang.types import Symbol
+from yieldlang.types import Symbol, SymbolFn, SymbolProxy
 
 
 class BaseSampler:
@@ -9,14 +9,32 @@ class BaseSampler:
     def __init__(self) -> None:
         pass
 
-    def select(self, *args: Symbol) -> Symbol:
-        """Select a symbol from a set of symbols."""
-        raise NotImplementedError
-
     @staticmethod
     def default() -> "RandomSampler":
         """Get the default sampler."""
         return RandomSampler()
+
+    def process_symbol_proxy(self, proxy: SymbolProxy) -> Symbol:
+        """Process a symbol proxy.
+
+        Args:
+            proxy (SymbolProxy): A symbol proxy.
+        Returns:
+            Symbol: The result of the symbol proxy.
+        Raises:
+            NotImplementedError: If the function is not implemented in the sampler.
+        """
+        try:
+            fn: SymbolFn = getattr(self, proxy.fn.__name__)
+            return fn(*proxy.args, **proxy.kwargs)
+        except (AttributeError, NotImplementedError):
+            ff = proxy.fn.__name__
+            cc = self.__class__.__name__
+            raise NotImplementedError(f"{ff} is not implemented in {cc}")
+
+    def select(self, *args: Symbol) -> Symbol:
+        """Select a symbol from a set of symbols."""
+        raise NotImplementedError
 
 
 class RandomSampler(BaseSampler):

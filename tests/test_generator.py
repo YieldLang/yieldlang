@@ -106,6 +106,20 @@ def test_y_strale():
     assert ret == "3.14159265"
 
 
+def test_y_fstring():
+    class G(TextGenerator):
+        def top(self):
+            yield 1
+            a3b5 = yield f"a{yield 3}{yield self.b}5"
+            assert a3b5 == "a3b5"
+
+        def b(self):
+            yield "b"
+
+    ret = EmptyString.join(G())
+    assert ret == "13ba3b5"
+
+
 def test_y_generator():
     class A(TextGenerator):
         def top(self):
@@ -155,5 +169,6 @@ if __name__ == "__main__":
     test_y_eos()
     test_y_eof()
     test_y_strale()
+    test_y_fstring()
     test_y_generator()
     test_next_generator()

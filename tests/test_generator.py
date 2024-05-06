@@ -1,5 +1,5 @@
-from yieldlang.constants import EmptyString, Token
 from yieldlang.generator import TextGenerator
+from yieldlang.types import EmptyString, Token
 
 
 def test_y_a_eq_a():

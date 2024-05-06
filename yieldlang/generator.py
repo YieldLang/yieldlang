@@ -1,13 +1,15 @@
 from typing import Iterable
 
-from yieldlang.constants import EmptyString, Token
 from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
+    EmptyString,
     NonTerminal,
     Symbol,
     SymbolFn,
     SymbolProxy,
+    Token,
     is_callable,
+    is_empty,
     is_non_terminal,
     is_strable,
     is_symbol_proxy,
@@ -92,15 +94,15 @@ class TextGenerator:
         """Flatten a symbol."""
         if is_strable(symbol):
             yield str(symbol)
-        elif symbol is None:
+        elif is_empty(symbol):
             yield EmptyString
         elif is_callable(symbol):
             yield from self.__flatten(symbol())
+        elif is_token(symbol):
+            yield from self.__flatten_token(symbol)
         elif is_symbol_proxy(symbol):
             yield from self.__flatten_symbol_proxy(symbol)
         elif is_non_terminal(symbol):
             yield from self.__flatten_non_terminal(symbol)
-        elif is_token(symbol):
-            yield from self.__flatten_token(symbol)
         else:
             raise TypeError(f"Invalid symbol: {symbol}")

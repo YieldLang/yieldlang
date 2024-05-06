@@ -1,6 +1,6 @@
 from yieldlang.combinators import select
-from yieldlang.constants import EmptyString
 from yieldlang.generator import TextGenerator
+from yieldlang.types import EmptyString
 
 
 def test_y_select():

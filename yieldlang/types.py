@@ -1,7 +1,38 @@
-from typing import Any, Callable, Generator, TypeAlias, TypeGuard, Union
+from enum import Enum
+from typing import (
+    Any,
+    Callable,
+    Generator,
+    Iterable,
+    Literal,
+    TypeAlias,
+    TypeGuard,
+    Union,
+)
 
-from yieldlang.constants import Token
-from yieldlang.utils import is_iterable
+EmptyString: Literal[""] = ""
+"""Empty string constant."""
+
+EmptyStringType: TypeAlias = Literal[""]
+"""Type alias for an empty string type."""
+
+
+class Token(Enum):
+    """Token enumeration for the generator."""
+
+    Empty = 0
+    """Empty token."""
+    EOF = 1
+    """End of file token."""
+    EOS = 2
+    """End of statement token."""
+
+
+EmptyType: TypeAlias = None | EmptyStringType | Literal[Token.Empty]
+"""Type alias for an empty type."""
+
+Emptys = (None, EmptyString, Token.Empty)
+
 
 Strable: TypeAlias = str | int | float
 """Type alias for a stringable type."""
@@ -51,7 +82,7 @@ def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
         bool: ``True`` if the symbol is a non-terminal, ``False`` otherwise.
     """
 
-    return is_iterable(symbol)
+    return is_iterable(symbol) and not isinstance(symbol, str)
 
 
 def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
@@ -85,3 +116,29 @@ def is_token(obj: Any) -> TypeGuard[Token]:
         bool: ``True`` if the object is a token, ``False`` otherwise.
     """
     return isinstance(obj, Token)
+
+
+def is_iterable(obj: Any) -> TypeGuard[Iterable]:
+    """Check if an object is iterable.
+
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is iterable, ``False`` otherwise.
+    """
+    try:
+        iter(obj)
+    except TypeError:
+        return False
+    return True
+
+
+def is_empty(symbol: Any) -> TypeGuard[EmptyType]:
+    """Check if a symbol is empty.
+
+    Args:
+        symbol (Any): The symbol to check.
+    Returns:
+        bool: ``True`` if the symbol is empty, ``False`` otherwise.
+    """
+    return symbol in Emptys

@@ -19,7 +19,7 @@ def test_y_select():
             yield "F"
 
     for _ in range(10):
-        EmptyString.join(G().__iter__())
+        EmptyString.join(G())
 
 
 if __name__ == "__main__":

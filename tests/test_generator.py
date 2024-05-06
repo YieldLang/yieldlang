@@ -8,7 +8,7 @@ def test_y_a_eq_a():
             a = yield "A"
             assert a == "A"
 
-    ret = EmptyString.join(G().__iter__())
+    ret = EmptyString.join(G())
     assert ret == "A"
 
 
@@ -32,7 +32,7 @@ def test_y_seq_eq_join_seq():
             yield "b"
             yield "d"
 
-    ret = EmptyString.join(G().__iter__())
+    ret = EmptyString.join(G())
     assert ret == "ABCabdABCDxabdy"
 
 
@@ -54,7 +54,7 @@ def test_y_eos():
             yield Token.EOS
             yield "G"
 
-    ret = EmptyString.join(G().__iter__())
+    ret = EmptyString.join(G())
     assert ret == "ABCABCF" + "ABCF" + "ABC"
 
 
@@ -86,7 +86,7 @@ def test_y_eof():
             yield "G"
             raise RuntimeError("This should not be reached")
 
-    ret = EmptyString.join(G().__iter__())
+    ret = EmptyString.join(G())
     assert ret == "ABCEF"
 
 
@@ -102,7 +102,7 @@ def test_y_strale():
             c = yield "5"
             assert c == "5"
 
-    ret = EmptyString.join(G().__iter__())
+    ret = EmptyString.join(G())
     assert ret == "3.14159265"
 
 
@@ -126,8 +126,27 @@ def test_y_generator():
         def eof(self):
             raise EOFError
 
-    ret = EmptyString.join(A().__iter__())
+    ret = EmptyString.join(A())
     assert ret == "ABCD"
+
+
+def test_next_generator():
+    class G(TextGenerator):
+        def top(self):
+            yield "A"
+            bcd = yield ("B", "C", "D")
+            assert bcd == "BCD"
+            yield self.e
+
+        def e(self):
+            yield "EF666"
+
+    g = G()
+    assert next(g) == "A"
+    assert next(g) == "B"
+    assert next(g) == "C"
+    assert next(g) == "D"
+    assert next(g) == EmptyString.join(g.e())
 
 
 if __name__ == "__main__":
@@ -137,3 +156,4 @@ if __name__ == "__main__":
     test_y_eof()
     test_y_strale()
     test_y_generator()
+    test_next_generator()

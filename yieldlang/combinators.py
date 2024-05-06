@@ -1,6 +1,6 @@
 from itertools import repeat as _repeat
 
-from yieldlang.types import Symbol, SymbolProxy
+from yieldlang.types import ProxySymbol, Symbol
 
 
 def repeat(symbol: Symbol, n_times: int) -> Symbol:
@@ -16,12 +16,12 @@ def repeat(symbol: Symbol, n_times: int) -> Symbol:
     return None
 
 
-def select(*args: Symbol) -> SymbolProxy:
+def select(*args: Symbol) -> ProxySymbol:
     """Select a symbol from a set of symbols.
 
     Args:
         *args (Symbol): The symbols to select from.
     Returns:
-        SymbolProxy: The selected symbol.
+        ProxySymbol: The selected symbol.
     """
-    return SymbolProxy(select, *args)
+    return ProxySymbol(select, *args)

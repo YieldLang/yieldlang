@@ -3,7 +3,7 @@ from typing import (
     Any,
     Callable,
     Generator,
-    Iterable,
+    Iterator,
     Literal,
     TypeAlias,
     TypeGuard,
@@ -43,26 +43,26 @@ Terminal: TypeAlias = Strable | Token | None
 NonTerminal: TypeAlias = Generator[Union["Symbol"], str, None]
 """Type alias for a non-terminal type."""
 
-SymbolFn: TypeAlias = Callable[[], "Symbol"]
-"""Type alias for a symbol function type."""
+CallableSymbol: TypeAlias = Callable[[], "Symbol"]
+"""Type alias for a callable symbol type."""
 
-Symbol: TypeAlias = Terminal | NonTerminal | SymbolFn | "SymbolProxy"
+Symbol: TypeAlias = Terminal | NonTerminal | CallableSymbol | "ProxySymbol"
 """Type alias for a symbol type."""
 
-SymbolProxyFn: TypeAlias = Callable[..., "SymbolProxy"]
+ProxySymbolFn: TypeAlias = Callable[..., "ProxySymbol"]
 """Type alias for a symbol proxy function type."""
 
 
-class SymbolProxy:
-    """A proxy for a symbol."""
+class ProxySymbol:
+    """A proxy symbol that represents a symbol that is not yet evaluated."""
 
-    def __init__(self, fn: SymbolProxyFn, *args: Symbol, **kwargs) -> None:
+    def __init__(self, fn: ProxySymbolFn, *args: Symbol, **kwargs) -> None:
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
 
-def is_symbol_proxy(obj: Any) -> TypeGuard[SymbolProxy]:
+def is_symbol_proxy(obj: Any) -> TypeGuard[ProxySymbol]:
     """Check if an object is a symbol proxy.
 
     Args:
@@ -70,7 +70,7 @@ def is_symbol_proxy(obj: Any) -> TypeGuard[SymbolProxy]:
     Returns:
         bool: ``True`` if the object is a symbol proxy, ``False`` otherwise.
     """
-    return isinstance(obj, SymbolProxy)
+    return isinstance(obj, ProxySymbol)
 
 
 def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
@@ -82,7 +82,7 @@ def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
         bool: ``True`` if the symbol is a non-terminal, ``False`` otherwise.
     """
 
-    return is_iterable(symbol) and not isinstance(symbol, str)
+    return is_iterator(symbol) and not isinstance(symbol, str)
 
 
 def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
@@ -118,13 +118,13 @@ def is_token(obj: Any) -> TypeGuard[Token]:
     return isinstance(obj, Token)
 
 
-def is_iterable(obj: Any) -> TypeGuard[Iterable]:
-    """Check if an object is iterable.
+def is_iterator(obj: Any) -> TypeGuard[Iterator]:
+    """Check if an object is iterator.
 
     Args:
         obj (Any): The object to check.
     Returns:
-        bool: ``True`` if the object is iterable, ``False`` otherwise.
+        bool: ``True`` if the object is iterator, ``False`` otherwise.
     """
     try:
         iter(obj)

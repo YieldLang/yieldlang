@@ -1,11 +1,11 @@
-from typing import Iterable
+from typing import Iterator
 
 from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
     EmptyString,
     NonTerminal,
+    ProxySymbol,
     Symbol,
-    SymbolProxy,
     Token,
     is_callable,
     is_empty,
@@ -32,12 +32,17 @@ class TextGenerator:
         if sampler is None:
             sampler = BaseSampler.default()
         self.__sampler = sampler
+        self.__iterator = iter(self)
 
-    def __iter__(self) -> Iterable[str]:
+    def __next__(self) -> str:
+        """Get the next token."""
+        return next(self.__iterator)
+
+    def __iter__(self) -> Iterator[str]:
         """Iterate over the generator."""
         return self.__iter_symbol(self.top)
 
-    def __iter_symbol(self, symbol: Symbol) -> Iterable[str]:
+    def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
         """Iterate over a symbol."""
         try:
             for token in self.__flatten(symbol):
@@ -45,7 +50,7 @@ class TextGenerator:
         except EOFError:
             pass
 
-    def __flatten_non_terminal(self, nt: NonTerminal) -> Iterable[str]:
+    def __flatten_non_terminal(self, nt: NonTerminal) -> Iterator[str]:
         """Flatten a non-terminal."""
         if not hasattr(nt, "send"):
             for symbol in nt:
@@ -66,7 +71,7 @@ class TextGenerator:
             except StopIteration:
                 pass
 
-    def __flatten_token(self, token: Token) -> Iterable[str]:
+    def __flatten_token(self, token: Token) -> Iterator[str]:
         """Flatten a token."""
         match token:
             case Token.EOF:
@@ -78,12 +83,12 @@ class TextGenerator:
             case _:
                 raise ValueError(f"Invalid token: {token}")
 
-    def __flatten_symbol_proxy(self, proxy: SymbolProxy) -> Iterable[str]:
+    def __flatten_symbol_proxy(self, proxy: ProxySymbol) -> Iterator[str]:
         """Flatten a symbol proxy."""
         symbol = self.__sampler.process_symbol_proxy(proxy)
         yield from self.__flatten(symbol)
 
-    def __flatten(self, symbol: Symbol) -> Iterable[str]:
+    def __flatten(self, symbol: Symbol) -> Iterator[str]:
         """Flatten a symbol."""
         if is_strable(symbol):
             yield str(symbol)

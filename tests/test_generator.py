@@ -151,6 +151,7 @@ def test_next_generator():
             bcd = yield ("B", "C", "D")
             assert bcd == "BCD"
             yield self.e
+            yield (1, 2, 3)
 
         def e(self):
             yield "EF666"
@@ -161,6 +162,7 @@ def test_next_generator():
     assert next(g) == "C"
     assert next(g) == "D"
     assert next(g) == EmptyString.join(g.e())
+    assert EmptyString.join(g) == "123"
 
 
 if __name__ == "__main__":

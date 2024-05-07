@@ -29,18 +29,16 @@ class TextGenerator:
 
     def __init__(self, sampler: BaseSampler | None = None) -> None:
         """Initialize the generator with a sampler."""
-        if sampler is None:
-            sampler = BaseSampler.default()
-        self.__sampler = sampler
-        self.__iterator = iter(self)
+        self.__sampler = sampler or BaseSampler.default()
+        self.__iterator = self.__iter_symbol(self.top)
+
+    def __iter__(self) -> Iterator[str]:
+        """Iterate over the generator."""
+        return self.__iterator
 
     def __next__(self) -> str:
         """Get the next token."""
         return next(self.__iterator)
-
-    def __iter__(self) -> Iterator[str]:
-        """Iterate over the generator."""
-        return self.__iter_symbol(self.top)
 
     def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
         """Iterate over a symbol."""

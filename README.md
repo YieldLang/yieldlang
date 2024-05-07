@@ -48,4 +48,4 @@ make docs
 
 ## Acknowledgements
 
-- Based on template https://github.com/allenai/python-package-template
+- Based on template: [github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)

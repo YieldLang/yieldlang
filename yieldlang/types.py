@@ -3,11 +3,11 @@ from typing import (
     Any,
     Callable,
     Generator,
+    Iterable,
     Iterator,
     Literal,
     TypeAlias,
     TypeGuard,
-    Union,
 )
 
 EmptyString: Literal[""] = ""
@@ -40,7 +40,16 @@ Strable: TypeAlias = str | int | float
 Terminal: TypeAlias = Strable | Token | None
 """Type alias for a terminal type."""
 
-NonTerminal: TypeAlias = Generator[Union["Symbol"], str, None]
+IterableSymbol: TypeAlias = Iterable["Symbol"]
+"""Type alias for an iterable symbol type."""
+
+IteratorSymbol: TypeAlias = Iterator["Symbol"]
+"""Type alias for an iterator symbol type."""
+
+GeneratorSymbol: TypeAlias = Generator["Symbol", str, None]
+"""Type alias for a generator symbol type."""
+
+NonTerminal: TypeAlias = IterableSymbol | IteratorSymbol | GeneratorSymbol
 """Type alias for a non-terminal type."""
 
 CallableSymbol: TypeAlias = Callable[[], "Symbol"]
@@ -82,7 +91,7 @@ def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
         bool: ``True`` if the symbol is a non-terminal, ``False`` otherwise.
     """
 
-    return is_iterator(symbol) and not isinstance(symbol, str)
+    return is_iterable(symbol) and not isinstance(symbol, str)
 
 
 def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
@@ -118,19 +127,52 @@ def is_token(obj: Any) -> TypeGuard[Token]:
     return isinstance(obj, Token)
 
 
-def is_iterator(obj: Any) -> TypeGuard[Iterator]:
-    """Check if an object is iterator.
+def is_iterable(obj: Any) -> TypeGuard[Iterable]:
+    """Check if an object is iterable.
 
     Args:
         obj (Any): The object to check.
     Returns:
-        bool: ``True`` if the object is iterator, ``False`` otherwise.
+        bool: ``True`` if the object is iterable, ``False`` otherwise.
     """
     try:
         iter(obj)
     except TypeError:
         return False
     return True
+
+
+def is_iterator(obj: Any) -> TypeGuard[Iterator]:
+    """Check if an object is an iterator.
+
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is an iterator, ``False`` otherwise.
+    """
+    return is_iterable(obj) and hasattr(obj, "__next__")
+
+
+def is_generator(obj: Any) -> TypeGuard[Generator]:
+    """Check if an object is a generator.
+
+    Args:
+        obj (Any): The object to check.
+    Returns:
+        bool: ``True`` if the object is a generator, ``False`` otherwise.
+    """
+    return is_iterator(obj) and hasattr(obj, "send")
+
+
+def is_nt_generator(obj: NonTerminal) -> TypeGuard[GeneratorSymbol]:
+    """Check if a non-terminal is a generator.
+
+    Args:
+        obj (NonTerminal): The non-terminal to check.
+    Returns:
+        bool: ``True`` if the non-terminal is a generator, ``False`` otherwise.
+    """
+    return hasattr(obj, "send")
 
 
 def is_empty(symbol: Any) -> TypeGuard[EmptyType]:

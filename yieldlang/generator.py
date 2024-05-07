@@ -3,6 +3,7 @@ from typing import Iterator
 from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
     EmptyString,
+    IteratorSymbol,
     NonTerminal,
     ProxySymbol,
     Symbol,
@@ -10,6 +11,7 @@ from yieldlang.types import (
     is_callable,
     is_empty,
     is_non_terminal,
+    is_nt_generator,
     is_strable,
     is_symbol_proxy,
     is_token,
@@ -50,12 +52,8 @@ class TextGenerator:
 
     def __flatten_non_terminal(self, nt: NonTerminal) -> Iterator[str]:
         """Flatten a non-terminal."""
-        if not hasattr(nt, "send"):
-            for symbol in nt:
-                if symbol is Token.EOS:
-                    break
-                yield from self.__flatten(symbol)
-        else:
+        if is_nt_generator(nt):
+            # Must be a generator
             try:
                 symbol = next(nt)
                 while True:
@@ -68,6 +66,13 @@ class TextGenerator:
                     symbol = nt.send(EmptyString.join(str_list))
             except StopIteration:
                 pass
+        else:
+            # Must be an iterable
+            iterator: IteratorSymbol = iter(nt)
+            for symbol in iter(iterator):
+                if symbol is Token.EOS:
+                    break
+                yield from self.__flatten(symbol)
 
     def __flatten_token(self, token: Token) -> Iterator[str]:
         """Flatten a token."""

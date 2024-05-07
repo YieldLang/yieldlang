@@ -1,5 +1,3 @@
-import itertools
-
 from yieldlang.types import ProxySymbol, Symbol
 
 
@@ -12,7 +10,8 @@ def repeat(symbol: Symbol, n_times: int) -> Symbol:
     Returns:
         Symbol: The repeated symbol.
     """
-    yield from itertools.repeat(symbol, n_times)
+    for _ in range(n_times):
+        yield symbol
     return None
 
 

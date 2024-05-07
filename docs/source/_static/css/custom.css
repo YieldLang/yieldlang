@@ -1,5 +1,4 @@
 .sidebar-brand-text {
-    font-family: var(--font-stack--monospace);
     font-weight: 800;
 }
 
@@ -52,7 +51,7 @@ body {
 
     html,
     body {
-        font-size: clamp(4px, 3.5dvi, 1rem);
+        font-size: clamp(1px, 3.1415dvi, 1rem);
     }
 }
 
@@ -90,7 +89,6 @@ p {
 .page .header-center {
     padding-left: 2.5rem;
     font-weight: 600;
-    font-family: var(--font-stack--monospace);
 }
 
 .nav-overlay-icon .icon,
@@ -167,4 +165,11 @@ p {
 
 .reference .viewcode-link {
     min-width: calc(8rem * 0.5);
+}
+
+.headerlink {
+    float: inline-end;
+    text-align: end;
+    margin-right: 0.5rem;
+    z-index: 5;
 }

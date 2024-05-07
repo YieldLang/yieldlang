@@ -116,7 +116,7 @@ typehints_defaults = "comma"
 #
 html_theme = "furo"
 
-html_title = f"YieldLang {VERSION} Documentation"
+html_title = f"<code>YieldLang Docs v{VERSION}</code>"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -32,7 +32,7 @@ EmptyType: TypeAlias = None | EmptyStringType | Literal[Token.Empty]
 """Type alias for an empty type."""
 
 Emptys = (None, EmptyString, Token.Empty)
-
+"""Tuple of empty types."""
 
 Strable: TypeAlias = str | int | float
 """Type alias for a stringable type."""

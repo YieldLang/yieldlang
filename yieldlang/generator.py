@@ -33,7 +33,7 @@ class TextGenerator:
         self.__iterator = self.__iter_symbol(self.top)
 
     def __iter__(self) -> Iterator[str]:
-        """Iterate over the generator."""
+        """Get the iterator."""
         return self.__iterator
 
     def __next__(self) -> str:

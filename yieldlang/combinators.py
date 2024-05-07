@@ -10,6 +10,8 @@ def repeat(symbol: Symbol, n_times: int) -> Symbol:
     Returns:
         Symbol: The repeated symbol.
     """
+    # Get an error: `yield from itertools.repeat`
+    # See: https://github.com/YieldLang/yieldlang/commit/3cd965b26636e4b5a90ed7c4701c32391d0a9cad#r141767404
     for _ in range(n_times):
         yield symbol
     return None

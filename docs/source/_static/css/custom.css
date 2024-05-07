@@ -59,7 +59,6 @@ body {
 * {
     box-sizing: border-box;
     position: relative;
-    min-width: 0;
 }
 
 body {
@@ -150,25 +149,11 @@ p {
     }
 }
 
-.content-icon-container .edit-this-page {
-    display: flex;
-    align-items: center;
-}
-
-.content-icon-container .edit-this-page .muted-link {
-    height: 1.25rem;
-    width: 1.25rem;
-}
-
-.content-icon-container .edit-this-page .muted-link svg {
-    height: 100%;
-    width: 100%;
-}
-
 .content-icon-container {
     position: absolute;
     right: 1rem;
-    z-index: 5;
+    z-index: 9;
+    margin-top: 0.2rem;
 }
 
 .toc-tree-container .toc-tree {
@@ -181,5 +166,5 @@ p {
 }
 
 .reference .viewcode-link {
-    min-width: 5rem;
+    min-width: calc(8rem * 0.5);
 }

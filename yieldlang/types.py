@@ -59,7 +59,7 @@ Symbol: TypeAlias = Terminal | NonTerminal | CallableSymbol | "ProxySymbol"
 """Type alias for a symbol type."""
 
 ProxySymbolFn: TypeAlias = Callable[..., "ProxySymbol"]
-"""Type alias for a symbol proxy function type."""
+"""Type alias for a proxy symbol function type."""
 
 
 class ProxySymbol:
@@ -71,13 +71,13 @@ class ProxySymbol:
         self.kwargs = kwargs
 
 
-def is_symbol_proxy(obj: Any) -> TypeGuard[ProxySymbol]:
-    """Check if an object is a symbol proxy.
+def is_proxy_symbol(obj: Any) -> TypeGuard[ProxySymbol]:
+    """Check if an object is a proxy symbol.
 
     Args:
         obj (Any): The object to check.
     Returns:
-        bool: ``True`` if the object is a symbol proxy, ``False`` otherwise.
+        bool: ``True`` if the object is a proxy symbol, ``False`` otherwise.
     """
     return isinstance(obj, ProxySymbol)
 

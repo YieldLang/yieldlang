@@ -12,8 +12,8 @@ from yieldlang.types import (
     is_empty,
     is_non_terminal,
     is_nt_generator,
+    is_proxy_symbol,
     is_strable,
-    is_symbol_proxy,
     is_token,
 )
 
@@ -86,9 +86,9 @@ class TextGenerator:
             case _:
                 raise ValueError(f"Invalid token: {token}")
 
-    def __flatten_symbol_proxy(self, proxy: ProxySymbol) -> Iterator[str]:
-        """Flatten a symbol proxy."""
-        symbol = self.__sampler.process_symbol_proxy(proxy)
+    def __flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
+        """Flatten a proxy symbol."""
+        symbol = self.__sampler.process_proxy_symbol(proxy)
         yield from self.__flatten(symbol)
 
     def __flatten(self, symbol: Symbol) -> Iterator[str]:
@@ -101,8 +101,8 @@ class TextGenerator:
             yield from self.__flatten(symbol())
         elif is_token(symbol):
             yield from self.__flatten_token(symbol)
-        elif is_symbol_proxy(symbol):
-            yield from self.__flatten_symbol_proxy(symbol)
+        elif is_proxy_symbol(symbol):
+            yield from self.__flatten_proxy_symbol(symbol)
         elif is_non_terminal(symbol):
             yield from self.__flatten_non_terminal(symbol)
         else:

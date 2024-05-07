@@ -14,13 +14,13 @@ class BaseSampler:
         """Get the default sampler."""
         return RandomSampler()
 
-    def process_symbol_proxy(self, proxy: ProxySymbol) -> Symbol:
-        """Process a symbol proxy.
+    def process_proxy_symbol(self, proxy: ProxySymbol) -> Symbol:
+        """Process a proxy symbol.
 
         Args:
-            proxy (ProxySymbol): A symbol proxy.
+            proxy (ProxySymbol): A proxy symbol.
         Returns:
-            Symbol: The result of the symbol proxy.
+            Symbol: The result of the proxy symbol.
         Raises:
             NotImplementedError: If the function is not implemented in the sampler.
         """

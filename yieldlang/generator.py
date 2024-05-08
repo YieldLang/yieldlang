@@ -109,7 +109,12 @@ class TextGenerator:
     def _flatten(
         self, symbol: Symbol, /, ctx: FlattenContext | None = None
     ) -> Iterator[str]:
-        """Flatten a symbol."""
+        """Flatten a symbol.
+
+        Args:
+            symbol (Symbol): The symbol to flatten.
+            ctx (FlattenContext | None): The context for flattening.
+        """
         ctx = ctx or FlattenContext(max_depth=None, cur_depth=0)
         ctx = FlattenContext(ctx.max_depth, ctx.cur_depth + 1)
         if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:

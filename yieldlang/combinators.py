@@ -50,6 +50,7 @@ def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
     Args:
         sep (Symbol): The separator symbol.
         to_seq (Symbol): The symbol to join.
+        depth (int | None): The maximum depth to flatten. If None, depth is unlimited.
     Returns:
         Symbol: The joined symbol.
     """

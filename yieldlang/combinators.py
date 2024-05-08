@@ -27,7 +27,7 @@ def select(*args: Symbol) -> ProxySymbol:
     return ProxySymbol(select, *args)
 
 
-def optional(*symbol: Symbol):
+def optional(*symbol: Symbol) -> ProxySymbol:
     """Make a symbol optional.
 
     Args:

@@ -1,6 +1,7 @@
 from yieldlang.combinators import optional, repeat, select
 from yieldlang.generator import TextGenerator
-from yieldlang.types import EmptyString
+from yieldlang.types import EmptyString, Symbol
+from yieldlang.utils import iter_not_empty
 
 
 def test_y_select():
@@ -56,7 +57,32 @@ def test_y_optional():
         EmptyString.join(G())
 
 
+def test_y_join():
+    class G(TextGenerator):
+        def top(self):
+            a = yield self.join(", ", self.seq)
+            assert a == "A, B, C, E"
+
+        def seq(self):
+            yield "A"
+            yield None
+            yield "B"
+            yield ("C", "E")
+
+        def join(self, sep: Symbol, to_seq: Symbol):
+            iterator = iter_not_empty(self._flatten(to_seq))
+            for symbol in iterator:
+                yield symbol
+                break
+            for symbol in iterator:
+                yield sep
+                yield symbol
+
+    EmptyString.join(G())
+
+
 if __name__ == "__main__":
     test_y_select()
     test_y_repeat()
     test_y_optional()
+    test_y_join()

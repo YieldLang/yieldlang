@@ -1,13 +1,5 @@
 from enum import Enum
-from typing import (
-    Callable,
-    Generator,
-    Iterable,
-    Iterator,
-    Literal,
-    TypeAlias,
-    TypeGuard,
-)
+from typing import Callable, Generator, Iterable, Iterator, Literal, TypeAlias
 
 from typing_extensions import TypeIs
 
@@ -53,7 +45,7 @@ GeneratorSymbol: TypeAlias = Generator["Symbol", str, None]
 NonTerminal: TypeAlias = IterableSymbol | IteratorSymbol | GeneratorSymbol
 """Type alias for a non-terminal type."""
 
-CallableSymbol: TypeAlias = Callable[[], "Symbol"]
+CallableSymbol: TypeAlias = Callable[..., "Symbol"]
 """Type alias for a callable symbol type."""
 
 Symbol: TypeAlias = Terminal | NonTerminal | CallableSymbol | "ProxySymbol"
@@ -72,7 +64,7 @@ class ProxySymbol:
         self.kwargs = kwargs
 
 
-def is_proxy_symbol(obj: object) -> TypeGuard[ProxySymbol]:
+def is_proxy_symbol(obj: object) -> TypeIs[ProxySymbol]:
     """Check if an object is a proxy symbol.
 
     Args:
@@ -83,7 +75,7 @@ def is_proxy_symbol(obj: object) -> TypeGuard[ProxySymbol]:
     return isinstance(obj, ProxySymbol)
 
 
-def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
+def is_non_terminal(symbol: Symbol) -> TypeIs[NonTerminal]:
     """Check if a symbol is a non-terminal.
 
     Args:
@@ -95,7 +87,7 @@ def is_non_terminal(symbol: Symbol) -> TypeGuard[NonTerminal]:
     return is_iterable(symbol) and not isinstance(symbol, str)
 
 
-def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
+def is_callable(symbol: Symbol) -> TypeIs[Callable[[], Symbol]]:
     """Check if a symbol is callable.
 
     Args:
@@ -106,7 +98,7 @@ def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
     return callable(symbol)
 
 
-def is_strable(obj: object) -> TypeGuard[Strable]:
+def is_strable(obj: object) -> TypeIs[Strable]:
     """Check if an object is stringable.
 
     Args:
@@ -117,7 +109,7 @@ def is_strable(obj: object) -> TypeGuard[Strable]:
     return isinstance(obj, (str, int, float))
 
 
-def is_token(obj: object) -> TypeGuard[Token]:
+def is_token(obj: object) -> TypeIs[Token]:
     """Check if an object is a token.
 
     Args:
@@ -128,7 +120,7 @@ def is_token(obj: object) -> TypeGuard[Token]:
     return isinstance(obj, Token)
 
 
-def is_iterable(obj: object) -> TypeGuard[Iterable]:
+def is_iterable(obj: object) -> TypeIs[Iterable]:
     """Check if an object is iterable.
 
     Args:
@@ -139,7 +131,7 @@ def is_iterable(obj: object) -> TypeGuard[Iterable]:
     return isinstance(obj, Iterable)
 
 
-def is_iterator(obj: object) -> TypeGuard[Iterator]:
+def is_iterator(obj: object) -> TypeIs[Iterator]:
     """Check if an object is an iterator.
 
     Args:
@@ -150,7 +142,7 @@ def is_iterator(obj: object) -> TypeGuard[Iterator]:
     return isinstance(obj, Iterator)
 
 
-def is_generator(obj: object) -> TypeGuard[Generator]:
+def is_generator(obj: object) -> TypeIs[Generator]:
     """Check if an object is a generator.
 
     Args:
@@ -169,10 +161,10 @@ def is_nt_generator(nt: NonTerminal) -> TypeIs[GeneratorSymbol]:
     Returns:
         bool: ``True`` if the non-terminal is a generator, ``False`` otherwise.
     """
-    return hasattr(nt, "send")
+    return is_generator(nt)
 
 
-def is_empty(symbol: object) -> TypeGuard[EmptyType]:
+def is_empty(symbol: object) -> TypeIs[EmptyType]:
     """Check if a symbol is empty.
 
     Args:

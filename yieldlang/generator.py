@@ -44,7 +44,7 @@ class TextGenerator:
     def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
         """Iterate over a symbol."""
         try:
-            for token in self.__flatten(symbol):
+            for token in self._flatten(symbol):
                 yield token
         except EOFError:
             pass
@@ -59,7 +59,7 @@ class TextGenerator:
                     if symbol is Token.EOS:
                         break
                     str_list: list[str] = []
-                    for s in self.__flatten(symbol):
+                    for s in self._flatten(symbol):
                         yield s
                         str_list.append(s)
                     symbol = nt.send(EmptyString.join(str_list))
@@ -70,7 +70,7 @@ class TextGenerator:
             for symbol in iter(nt):
                 if symbol is Token.EOS:
                     break
-                yield from self.__flatten(symbol)
+                yield from self._flatten(symbol)
 
     def __flatten_token(self, token: Token) -> Iterator[str]:
         """Flatten a token."""
@@ -87,16 +87,16 @@ class TextGenerator:
     def __flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
         """Flatten a proxy symbol."""
         symbol = self.__sampler.process_proxy_symbol(proxy)
-        yield from self.__flatten(symbol)
+        yield from self._flatten(symbol)
 
-    def __flatten(self, symbol: Symbol) -> Iterator[str]:
+    def _flatten(self, symbol: Symbol) -> Iterator[str]:
         """Flatten a symbol."""
         if is_strable(symbol):
             yield str(symbol)
         elif is_empty(symbol):
             yield EmptyString
         elif is_callable(symbol):
-            yield from self.__flatten(symbol())
+            yield from self._flatten(symbol())
         elif is_token(symbol):
             yield from self.__flatten_token(symbol)
         elif is_proxy_symbol(symbol):

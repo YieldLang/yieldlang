@@ -1,3 +1,4 @@
+import inspect
 from typing import Iterator
 
 from yieldlang.sampler import BaseSampler
@@ -86,7 +87,15 @@ class TextGenerator:
 
     def __flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
         """Flatten a proxy symbol."""
-        symbol = self.__sampler.process_proxy_symbol(proxy)
+        param_iterable = inspect.signature(proxy.fn).parameters.values()
+        first_param = next(iter(param_iterable))
+        if (
+            first_param.name == "self"
+            and first_param.annotation == TextGenerator
+        ):
+            symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
+        else:
+            symbol = self.__sampler.process_proxy_symbol(proxy)
         yield from self._flatten(symbol)
 
     def _flatten(self, symbol: Symbol) -> Iterator[str]:

@@ -1,7 +1,9 @@
 import itertools
 from typing import Iterator
 
+from yieldlang.generator import TextGenerator
 from yieldlang.types import EmptyString, ProxySymbol, Symbol
+from yieldlang.utils import iter_not_empty
 
 
 def repeat(symbol: Symbol, n_times: int) -> Iterator[Symbol]:
@@ -16,15 +18,15 @@ def repeat(symbol: Symbol, n_times: int) -> Iterator[Symbol]:
     yield itertools.repeat(symbol, n_times)
 
 
-def select(*args: Symbol) -> ProxySymbol:
+def select(*symbol: Symbol) -> ProxySymbol:
     """Select a symbol from a set of symbols.
 
     Args:
-        *args (Symbol): The symbols to select from.
+        *symbol (Symbol): The symbols to select from.
     Returns:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
-    return ProxySymbol(select, *args)
+    return ProxySymbol(select, *symbol)
 
 
 def optional(*symbol: Symbol) -> ProxySymbol:
@@ -36,3 +38,16 @@ def optional(*symbol: Symbol) -> ProxySymbol:
         Symbol: The optional symbol.
     """
     return select(EmptyString, *symbol)
+
+
+def join(sep: Symbol, to_seq: Symbol) -> ProxySymbol:
+    def join(self: TextGenerator):
+        iterator = iter_not_empty(self._flatten(to_seq))
+        for symbol in iterator:
+            yield symbol
+            break
+        for symbol in iterator:
+            yield sep
+            yield symbol
+
+    return ProxySymbol(join)

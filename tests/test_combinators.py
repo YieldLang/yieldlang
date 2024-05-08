@@ -1,4 +1,4 @@
-from yieldlang.combinators import optional, repeat, select
+from yieldlang.combinators import join, optional, repeat, select
 from yieldlang.generator import TextGenerator
 from yieldlang.types import EmptyString, Symbol
 from yieldlang.utils import iter_not_empty
@@ -60,7 +60,7 @@ def test_y_optional():
 def test_y_join():
     class G(TextGenerator):
         def top(self):
-            a = yield self.join(", ", self.seq)
+            a = yield join(", ", self.seq)
             assert a == "A, B, C, E"
 
         def seq(self):

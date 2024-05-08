@@ -51,7 +51,7 @@ CallableSymbol: TypeAlias = Callable[..., "Symbol"]
 Symbol: TypeAlias = Terminal | NonTerminal | CallableSymbol | "ProxySymbol"
 """Type alias for a symbol type."""
 
-ProxySymbolFn: TypeAlias = Callable[..., "ProxySymbol"]
+ProxySymbolFn: TypeAlias = Callable[..., "ProxySymbol" | Symbol]
 """Type alias for a proxy symbol function type."""
 
 

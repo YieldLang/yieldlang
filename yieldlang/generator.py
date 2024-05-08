@@ -67,8 +67,7 @@ class TextGenerator:
     ) -> Iterator[Symbol]:
         """Flatten a non-terminal."""
         if is_nt_generator(nt):
-            # Must be a generator
-            try:
+            try:  # Must be a generator
                 symbol = next(nt)
                 while True:
                     if symbol is Token.EOS:
@@ -82,8 +81,7 @@ class TextGenerator:
                     symbol = nt.send(EmptyString.join(strs))
             except StopIteration:
                 pass
-        else:
-            # Must be an iterable
+        else:  # Must be an iterable
             for symbol in iter(nt):
                 if symbol is Token.EOS:
                     break

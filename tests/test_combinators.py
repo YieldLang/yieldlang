@@ -1,7 +1,6 @@
 from yieldlang.combinators import join, optional, repeat, select
 from yieldlang.generator import TextGenerator
-from yieldlang.types import EmptyString, Symbol
-from yieldlang.utils import iter_not_empty
+from yieldlang.types import EmptyString
 
 
 def test_y_select():
@@ -60,7 +59,7 @@ def test_y_optional():
 def test_y_join():
     class G(TextGenerator):
         def top(self):
-            a = yield join(", ", self.seq)
+            a = yield join(", ", self.seq, depth=None)
             assert a == "A, B, C, E"
 
             b = yield join(", ", 1234)
@@ -72,8 +71,16 @@ def test_y_join():
             d = yield join(", ", (1, 2, 3))
             assert d == "1, 2, 3"
 
-            e = yield join(0, join(1, range(3)))
+            e = yield join(0, join(1, range(3)), depth=None)
             assert e == "001010102"
+
+            d = yield join(", ", list(repeat("6", 3)))
+            assert d == "6, 6, 6"
+
+            f = yield join("-", self.abc, depth=2)
+            g = yield join("-", self.abc())
+            assert f == "0-ABCE"
+            assert f == g
 
         def seq(self):
             yield "A"
@@ -81,14 +88,9 @@ def test_y_join():
             yield "B"
             yield ("C", "E")
 
-        def join(self, sep: Symbol, to_seq: Symbol):
-            iterator = iter_not_empty(self._flatten(to_seq))
-            for symbol in iterator:
-                yield symbol
-                break
-            for symbol in iterator:
-                yield sep
-                yield symbol
+        def abc(self):
+            yield "0"
+            yield self.seq
 
     EmptyString.join(G())
 

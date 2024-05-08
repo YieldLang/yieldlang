@@ -1,7 +1,7 @@
 import itertools
 from typing import Iterator
 
-from yieldlang.generator import TextGenerator
+from yieldlang.generator import FlattenContext, TextGenerator
 from yieldlang.types import EmptyString, ProxySymbol, Symbol
 from yieldlang.utils import iter_not_empty
 
@@ -15,7 +15,7 @@ def repeat(symbol: Symbol, n_times: int) -> Iterator[Symbol]:
     Returns:
         Symbol: The repeated symbol.
     """
-    yield itertools.repeat(symbol, n_times)
+    return itertools.repeat(symbol, n_times)
 
 
 def select(*symbol: Symbol) -> ProxySymbol:
@@ -44,7 +44,7 @@ def optional(*symbol: Symbol) -> ProxySymbol:
     return select(EmptyString, *symbol)
 
 
-def join(sep: Symbol, to_seq: Symbol) -> ProxySymbol:
+def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
     """Join a sequence of symbols with a separator.
 
     Args:
@@ -55,7 +55,10 @@ def join(sep: Symbol, to_seq: Symbol) -> ProxySymbol:
     """
 
     def generator(self: TextGenerator):
-        iterator = iter_not_empty(self._flatten(to_seq))
+        flatten_ctx = FlattenContext(depth, cur_depth=0)
+        iterator = self._flatten(to_seq, ctx=flatten_ctx)
+
+        iterator = iter_not_empty(iterator)
         for symbol in iterator:
             yield symbol
             break

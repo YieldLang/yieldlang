@@ -20,12 +20,16 @@ from yieldlang.types import (
 
 @dataclass
 class FlattenContext:
+    """Context for flattening symbols."""
+
     max_depth: int | None
+    """The maximum depth to flatten. If None, flatten all symbols."""
     cur_depth: int
+    """The current depth of flattening."""
 
 
 class TextGenerator:
-    """A generator that generates text using a sampler."""
+    """Generator that generates text using a sampler."""
 
     def top(self) -> Symbol:
         """Get the top symbol of the generator.
@@ -106,13 +110,11 @@ class TextGenerator:
         self, symbol: Symbol, /, ctx: FlattenContext | None = None
     ) -> Iterator[str]:
         """Flatten a symbol."""
-        if ctx is None:
-            ctx = FlattenContext(max_depth=None, cur_depth=0)
-        else:
-            ctx.cur_depth += 1
-            if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
-                yield symbol  # type: ignore
-                return None
+        ctx = ctx or FlattenContext(max_depth=None, cur_depth=0)
+        ctx = FlattenContext(ctx.max_depth, ctx.cur_depth + 1)
+        if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
+            yield symbol  # type: ignore
+            return None
 
         if is_strable(symbol):
             yield str(symbol)

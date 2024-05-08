@@ -1,6 +1,6 @@
 from yieldlang.combinators import join, optional, repeat, select
 from yieldlang.generator import TextGenerator
-from yieldlang.types import EmptyString
+from yieldlang.types import EmptyString, Symbol
 
 
 def test_y_select():
@@ -77,10 +77,36 @@ def test_y_join():
             d = yield join(", ", list(repeat("6", 3)))
             assert d == "6, 6, 6"
 
-            f = yield join("-", self.abc, depth=2)
+            f = yield join("-", self.abc)
+            assert f == "0ABCE"
+
             g = yield join("-", self.abc())
-            assert f == "0-ABCE"
-            assert f == g
+            g2 = yield join("-", self.abc, depth=2)
+            assert g == g2 == "0-ABCE"
+
+            array: list[Symbol] = [
+                0,
+                [1, 1],
+                [1, 1, [2, 2]],
+                [1, 1, [2, 2, [3, 3]]],
+            ]
+
+            h = yield join("-", array, depth=0)
+            assert h == "0111122112233"
+
+            i = yield join("-", array, depth=1)
+            assert i == "0-11-1122-112233"
+
+            j = yield join("-", array, depth=2)
+            assert j == "0-1-1-1-1-22-1-1-2233"
+
+            k = yield join("-", array, depth=3)
+            assert k == "0-1-1-1-1-2-2-1-1-2-2-33"
+
+            x = yield join("-", array, depth=4)
+            y = yield join("-", array, depth=None)
+            assert y == "0-1-1-1-1-2-2-1-1-2-2-3-3"
+            assert x == y
 
         def seq(self):
             yield "A"

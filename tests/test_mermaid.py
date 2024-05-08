@@ -3,7 +3,7 @@ from yieldlang.generator import TextGenerator
 from yieldlang.types import EmptyString
 
 
-def test_base_mermaid():
+def test_base_flowchart():
     class G(TextGenerator):
         def top(self):
             yield self.mermaid
@@ -18,7 +18,7 @@ def test_base_mermaid():
 
         def flowchart(self):
             yield (" ", self.flowchart_dir, "\n")
-            yield join("\n", self.flowchart_rules)
+            yield join("\n", self.flowchart_rules(), depth=2)
 
         def flowchart_dir(self):
             yield select("TD", "LR")
@@ -39,4 +39,4 @@ def test_base_mermaid():
 
 
 if __name__ == "__main__":
-    test_base_mermaid()
+    test_base_flowchart()

@@ -58,13 +58,13 @@ class TextGenerator:
         """Iterate over a symbol."""
         try:
             for token in self._flatten(symbol):
-                yield token
+                yield str(token)
         except EOFError:
             pass
 
     def _flatten_non_terminal(
         self, nt: NonTerminal, /, ctx: FlattenContext | None
-    ) -> Iterator[str]:
+    ) -> Iterator[Symbol]:
         """Flatten a non-terminal."""
         if is_nt_generator(nt):
             # Must be a generator
@@ -73,10 +73,12 @@ class TextGenerator:
                 while True:
                     if symbol is Token.EOS:
                         break
+
                     strs: list[str] = []
                     for s in self._flatten(symbol, ctx=ctx):
                         yield s
                         strs.append(str(s))
+
                     symbol = nt.send(EmptyString.join(strs))
             except StopIteration:
                 pass
@@ -101,14 +103,14 @@ class TextGenerator:
 
     def _flatten_proxy_symbol(
         self, proxy: ProxySymbol, /, ctx: FlattenContext | None
-    ) -> Iterator[str]:
+    ) -> Iterator[Symbol]:
         """Flatten a proxy symbol."""
         symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
         yield from self._flatten(symbol, ctx=ctx)
 
     def _flatten(
         self, symbol: Symbol, /, ctx: FlattenContext | None = None
-    ) -> Iterator[str]:
+    ) -> Iterator[Symbol]:
         """Flatten a symbol.
 
         Args:
@@ -118,7 +120,7 @@ class TextGenerator:
         ctx = ctx or FlattenContext(max_depth=None, cur_depth=0)
         ctx = FlattenContext(ctx.max_depth, ctx.cur_depth + 1)
         if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
-            yield symbol  # type: ignore
+            yield symbol
             return None
 
         if is_strable(symbol):

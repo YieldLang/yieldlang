@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/YieldLang/yieldlang/actions"><img alt="GitHub Actions Workflow Status" src="https://github.com/yieldlang/yieldlang/actions/workflows/main.yml/badge.svg"/></a>
   <a href="https://docs.yieldlang.com/"><img alt="Documentation" src="https://readthedocs.org/projects/yieldlang/badge/?version=latest"/></a>
-  <a href="https://github.com/YieldLang/yieldlang/blob/main/LICENSE"><img alt="GPL-3.0 License" src="https://img.shields.io/badge/license-GPLv3.0-brightgreen"/></a>
+  <a href="https://github.com/YieldLang/yieldlang/blob/main/LICENSE"><img alt="Apache License, Version 2.0" src="https://img.shields.io/badge/License-Apache_2.0-blue.svg"/></a>
   <a href="https://github.com/YieldLang/yieldlang/commits/main/"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/yieldlang/yieldlang"/></a>
   <a href="https://pypi.org/project/yieldlang/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang"/></a>
 </p>

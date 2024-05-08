@@ -18,6 +18,7 @@ authors = [{ name = "HK-SHAO", email = "hk-shao@outlook.com" }]
 requires-python = ">=3.10"
 dependencies = [
   # Add your own dependencies here
+  "typing_extensions",
 ]
 license = { file = "LICENSE" }
 

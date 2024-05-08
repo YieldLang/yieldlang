@@ -1,6 +1,5 @@
 from enum import Enum
 from typing import (
-    Any,
     Callable,
     Generator,
     Iterable,
@@ -9,6 +8,8 @@ from typing import (
     TypeAlias,
     TypeGuard,
 )
+
+from typing_extensions import TypeIs
 
 EmptyString: Literal[""] = ""
 """Empty string constant."""
@@ -71,11 +72,11 @@ class ProxySymbol:
         self.kwargs = kwargs
 
 
-def is_proxy_symbol(obj: Any) -> TypeGuard[ProxySymbol]:
+def is_proxy_symbol(obj: object) -> TypeGuard[ProxySymbol]:
     """Check if an object is a proxy symbol.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is a proxy symbol, ``False`` otherwise.
     """
@@ -105,66 +106,62 @@ def is_callable(symbol: Symbol) -> TypeGuard[Callable[[], Symbol]]:
     return callable(symbol)
 
 
-def is_strable(obj: Any) -> TypeGuard[Strable]:
+def is_strable(obj: object) -> TypeGuard[Strable]:
     """Check if an object is stringable.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is stringable, ``False`` otherwise.
     """
     return isinstance(obj, (str, int, float))
 
 
-def is_token(obj: Any) -> TypeGuard[Token]:
+def is_token(obj: object) -> TypeGuard[Token]:
     """Check if an object is a token.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is a token, ``False`` otherwise.
     """
     return isinstance(obj, Token)
 
 
-def is_iterable(obj: Any) -> TypeGuard[Iterable]:
+def is_iterable(obj: object) -> TypeGuard[Iterable]:
     """Check if an object is iterable.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is iterable, ``False`` otherwise.
     """
-    try:
-        iter(obj)
-    except TypeError:
-        return False
-    return True
+    return isinstance(obj, Iterable)
 
 
-def is_iterator(obj: Any) -> TypeGuard[Iterator]:
+def is_iterator(obj: object) -> TypeGuard[Iterator]:
     """Check if an object is an iterator.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is an iterator, ``False`` otherwise.
     """
-    return is_iterable(obj) and hasattr(obj, "__next__")
+    return isinstance(obj, Iterator)
 
 
-def is_generator(obj: Any) -> TypeGuard[Generator]:
+def is_generator(obj: object) -> TypeGuard[Generator]:
     """Check if an object is a generator.
 
     Args:
-        obj (Any): The object to check.
+        obj (object): The object to check.
     Returns:
         bool: ``True`` if the object is a generator, ``False`` otherwise.
     """
-    return is_iterator(obj) and hasattr(obj, "send")
+    return isinstance(obj, Generator)
 
 
-def is_nt_generator(obj: NonTerminal) -> TypeGuard[GeneratorSymbol]:
+def is_nt_generator(obj: NonTerminal) -> TypeIs[GeneratorSymbol]:
     """Check if a non-terminal is a generator.
 
     Args:
@@ -175,11 +172,11 @@ def is_nt_generator(obj: NonTerminal) -> TypeGuard[GeneratorSymbol]:
     return hasattr(obj, "send")
 
 
-def is_empty(symbol: Any) -> TypeGuard[EmptyType]:
+def is_empty(symbol: object) -> TypeGuard[EmptyType]:
     """Check if a symbol is empty.
 
     Args:
-        symbol (Any): The symbol to check.
+        symbol (object): The symbol to check.
     Returns:
         bool: ``True`` if the symbol is empty, ``False`` otherwise.
     """

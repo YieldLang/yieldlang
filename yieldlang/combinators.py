@@ -1,7 +1,10 @@
+import itertools
+from typing import Iterator
+
 from yieldlang.types import ProxySymbol, Symbol
 
 
-def repeat(symbol: Symbol, n_times: int) -> Symbol:
+def repeat(symbol: Symbol, n_times: int) -> Iterator[Symbol]:
     """Repeat a symbol ``n_times`` times.
 
     Args:
@@ -10,11 +13,7 @@ def repeat(symbol: Symbol, n_times: int) -> Symbol:
     Returns:
         Symbol: The repeated symbol.
     """
-    # Get an error: `yield from itertools.repeat`
-    # See: https://github.com/YieldLang/yieldlang/commit/3cd965b26636e4b5a90ed7c4701c32391d0a9cad#r141767404
-    for _ in range(n_times):
-        yield symbol
-    return None
+    yield itertools.repeat(symbol, n_times)
 
 
 def select(*args: Symbol) -> ProxySymbol:
@@ -23,6 +22,6 @@ def select(*args: Symbol) -> ProxySymbol:
     Args:
         *args (Symbol): The symbols to select from.
     Returns:
-        ProxySymbol: The selected symbol.
+        ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
     return ProxySymbol(select, *args)

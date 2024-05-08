@@ -3,7 +3,6 @@ from typing import Iterator
 from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
     EmptyString,
-    IteratorSymbol,
     NonTerminal,
     ProxySymbol,
     Symbol,
@@ -68,8 +67,7 @@ class TextGenerator:
                 pass
         else:
             # Must be an iterable
-            iterator: IteratorSymbol = iter(nt)
-            for symbol in iter(iterator):
+            for symbol in iter(nt):
                 if symbol is Token.EOS:
                     break
                 yield from self.__flatten(symbol)

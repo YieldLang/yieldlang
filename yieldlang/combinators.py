@@ -1,7 +1,7 @@
 import itertools
 from typing import Iterator
 
-from yieldlang.types import ProxySymbol, Symbol
+from yieldlang.types import EmptyString, ProxySymbol, Symbol
 
 
 def repeat(symbol: Symbol, n_times: int) -> Iterator[Symbol]:
@@ -25,3 +25,14 @@ def select(*args: Symbol) -> ProxySymbol:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
     return ProxySymbol(select, *args)
+
+
+def optional(*symbol: Symbol):
+    """Make a symbol optional.
+
+    Args:
+        *symbol (Symbol): The symbol to make optional.
+    Returns:
+        Symbol: The optional symbol.
+    """
+    return select(EmptyString, *symbol)

@@ -63,8 +63,10 @@ def test_y_eof():
         def top(self):
             yield "A"
             yield self.b
+
             ce = yield (self.c, self.d, "E")
             assert ce == "CE"
+
             yield self.f
             yield self.g
 
@@ -110,6 +112,7 @@ def test_y_fstring():
     class G(TextGenerator):
         def top(self):
             yield 1
+
             a3b5 = yield f"a{yield 3}{yield self.b}5"
             assert a3b5 == "a3b5"
 
@@ -124,6 +127,7 @@ def test_y_generator():
     class A(TextGenerator):
         def top(self):
             yield "A"
+
             bcd = yield (B, C, "D")
             assert bcd == "BCD"
 
@@ -148,8 +152,10 @@ def test_next_generator():
     class G(TextGenerator):
         def top(self):
             yield "A"
+
             bcd = yield ("B", "C", "D")
             assert bcd == "BCD"
+
             yield self.e
             yield (1, 2, 3)
 

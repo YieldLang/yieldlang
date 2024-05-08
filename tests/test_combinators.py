@@ -1,4 +1,4 @@
-from yieldlang.combinators import repeat, select
+from yieldlang.combinators import optional, repeat, select
 from yieldlang.generator import TextGenerator
 from yieldlang.types import EmptyString
 
@@ -18,7 +18,7 @@ def test_y_select():
         def f(self):
             yield "F"
 
-    for _ in range(10):
+    for _ in range(100):
         EmptyString.join(G())
 
 
@@ -27,8 +27,10 @@ def test_y_repeat():
         def top(self):
             a666 = yield ("a", repeat("6", 3))
             assert a666 == "a666"
+
             aaa = yield repeat(self.a, 3)
             assert aaa == "aaa"
+
             a12a12 = yield repeat((self.a, 1, 2), 2)
             assert a12a12 == "a12a12"
 
@@ -38,6 +40,23 @@ def test_y_repeat():
     EmptyString.join(G())
 
 
+def test_y_optional():
+    class G(TextGenerator):
+        def top(self):
+            a = yield optional("A")
+            assert a in ("", "A")
+
+            b = yield optional("B", "C", self.d)
+            assert b in ("", "B", "C", "D")
+
+        def d(self):
+            yield "D"
+
+    for _ in range(100):
+        EmptyString.join(G())
+
+
 if __name__ == "__main__":
     test_y_select()
     test_y_repeat()
+    test_y_optional()

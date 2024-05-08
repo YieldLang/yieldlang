@@ -30,8 +30,10 @@ class TextGenerator:
 
     def __init__(self, sampler: BaseSampler | None = None) -> None:
         """Initialize the generator with a sampler."""
-        self._sampler = sampler or BaseSampler.default()
-        self._iterator = self.__iter_symbol(self.top)
+        self._sampler: BaseSampler = sampler or BaseSampler.default()
+        """The sampler to use for sampling symbols."""
+        self._iterator: Iterator[str] = self.__iter_symbol(self.top)
+        """The iterator to generate text."""
 
     def __iter__(self) -> Iterator[str]:
         """Get the iterator."""
@@ -49,7 +51,7 @@ class TextGenerator:
         except EOFError:
             pass
 
-    def __flatten_non_terminal(self, nt: NonTerminal) -> Iterator[str]:
+    def _flatten_non_terminal(self, nt: NonTerminal) -> Iterator[str]:
         """Flatten a non-terminal."""
         if is_nt_generator(nt):
             # Must be a generator
@@ -72,7 +74,7 @@ class TextGenerator:
                     break
                 yield from self._flatten(symbol)
 
-    def __flatten_token(self, token: Token) -> Iterator[str]:
+    def _flatten_token(self, token: Token) -> Iterator[str]:
         """Flatten a token."""
         match token:
             case Token.EOF:
@@ -84,7 +86,7 @@ class TextGenerator:
             case _:
                 raise ValueError(f"Invalid token: {token}")
 
-    def __flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
+    def _flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
         """Flatten a proxy symbol."""
         symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
         yield from self._flatten(symbol)
@@ -98,10 +100,10 @@ class TextGenerator:
         elif is_callable(symbol):
             yield from self._flatten(symbol())
         elif is_token(symbol):
-            yield from self.__flatten_token(symbol)
+            yield from self._flatten_token(symbol)
         elif is_proxy_symbol(symbol):
-            yield from self.__flatten_proxy_symbol(symbol)
+            yield from self._flatten_proxy_symbol(symbol)
         elif is_non_terminal(symbol):
-            yield from self.__flatten_non_terminal(symbol)
+            yield from self._flatten_non_terminal(symbol)
         else:
             raise TypeError(f"Invalid symbol: {symbol}")

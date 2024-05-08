@@ -1,16 +1,12 @@
 from yieldlang.combinators import join, repeat, select
 from yieldlang.generator import TextGenerator
-from yieldlang.sampler import BaseSampler
 from yieldlang.types import EmptyString
 
 
 def test_base_flowchart():
     class G(TextGenerator):
-        def __init__(self, sampler: BaseSampler | None = None) -> None:
-            super().__init__(sampler)
-            self.nodes: list[str] = []
-
         def top(self):
+            self.nodes: set[str] = set()
             yield self.mermaid
 
         def mermaid(self):
@@ -30,17 +26,17 @@ def test_base_flowchart():
 
         def flowchart_rules(self):
             single_line = (" " * 4, self.flowchart_rule)
-            yield repeat(single_line, 50)
+            yield repeat(single_line, 30)
 
         def flowchart_rule(self):
             node1 = yield self.node
             yield " --> "
             node2 = yield self.node
 
-            self.nodes += [node1, node2]
+            self.nodes |= set((node1, node2))
 
         def node(self):
-            yield select(*range(1, 50), *self.nodes)
+            yield select(*range(1, 15), *self.nodes)
 
     mermaid_code = EmptyString.join(G())
     print(mermaid_code)

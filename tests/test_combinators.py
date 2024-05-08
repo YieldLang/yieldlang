@@ -63,6 +63,18 @@ def test_y_join():
             a = yield join(", ", self.seq)
             assert a == "A, B, C, E"
 
+            b = yield join(", ", 1234)
+            assert b == "1234"
+
+            c = yield join(", ", list("789"))
+            assert c == "7, 8, 9"
+
+            d = yield join(", ", (1, 2, 3))
+            assert d == "1, 2, 3"
+
+            e = yield join(0, join(1, range(3)))
+            assert e == "001010102"
+
         def seq(self):
             yield "A"
             yield None

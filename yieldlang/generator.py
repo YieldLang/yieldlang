@@ -1,4 +1,3 @@
-import inspect
 from typing import Iterator
 
 from yieldlang.sampler import BaseSampler
@@ -31,16 +30,16 @@ class TextGenerator:
 
     def __init__(self, sampler: BaseSampler | None = None) -> None:
         """Initialize the generator with a sampler."""
-        self.__sampler = sampler or BaseSampler.default()
-        self.__iterator = self.__iter_symbol(self.top)
+        self._sampler = sampler or BaseSampler.default()
+        self._iterator = self.__iter_symbol(self.top)
 
     def __iter__(self) -> Iterator[str]:
         """Get the iterator."""
-        return self.__iterator
+        return self._iterator
 
     def __next__(self) -> str:
         """Get the next token."""
-        return next(self.__iterator)
+        return next(self._iterator)
 
     def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
         """Iterate over a symbol."""
@@ -87,15 +86,7 @@ class TextGenerator:
 
     def __flatten_proxy_symbol(self, proxy: ProxySymbol) -> Iterator[str]:
         """Flatten a proxy symbol."""
-        param_iterable = inspect.signature(proxy.fn).parameters.values()
-        first_param = next(iter(param_iterable))
-        if (
-            first_param.name == "self"
-            and first_param.annotation == TextGenerator
-        ):
-            symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
-        else:
-            symbol = self.__sampler.process_proxy_symbol(proxy)
+        symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
         yield from self._flatten(symbol)
 
     def _flatten(self, symbol: Symbol) -> Iterator[str]:

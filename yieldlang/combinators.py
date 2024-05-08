@@ -26,7 +26,11 @@ def select(*symbol: Symbol) -> ProxySymbol:
     Returns:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
-    return ProxySymbol(select, *symbol)
+
+    def generator(self: TextGenerator):
+        yield self._sampler.select(*symbol)
+
+    return ProxySymbol(generator)
 
 
 def optional(*symbol: Symbol) -> ProxySymbol:
@@ -41,7 +45,16 @@ def optional(*symbol: Symbol) -> ProxySymbol:
 
 
 def join(sep: Symbol, to_seq: Symbol) -> ProxySymbol:
-    def join(self: TextGenerator):
+    """Join a sequence of symbols with a separator.
+
+    Args:
+        sep (Symbol): The separator symbol.
+        to_seq (Symbol): The symbol to join.
+    Returns:
+        Symbol: The joined symbol.
+    """
+
+    def generator(self: TextGenerator):
         iterator = iter_not_empty(self._flatten(to_seq))
         for symbol in iterator:
             yield symbol
@@ -50,4 +63,4 @@ def join(sep: Symbol, to_seq: Symbol) -> ProxySymbol:
             yield sep
             yield symbol
 
-    return ProxySymbol(join)
+    return ProxySymbol(generator)

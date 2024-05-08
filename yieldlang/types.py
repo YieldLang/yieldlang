@@ -161,15 +161,15 @@ def is_generator(obj: object) -> TypeGuard[Generator]:
     return isinstance(obj, Generator)
 
 
-def is_nt_generator(obj: NonTerminal) -> TypeIs[GeneratorSymbol]:
+def is_nt_generator(nt: NonTerminal) -> TypeIs[GeneratorSymbol]:
     """Check if a non-terminal is a generator.
 
     Args:
-        obj (NonTerminal): The non-terminal to check.
+        nt (NonTerminal): The non-terminal to check.
     Returns:
         bool: ``True`` if the non-terminal is a generator, ``False`` otherwise.
     """
-    return hasattr(obj, "send")
+    return hasattr(nt, "send")
 
 
 def is_empty(symbol: object) -> TypeGuard[EmptyType]:

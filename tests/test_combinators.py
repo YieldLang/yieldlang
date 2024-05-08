@@ -47,7 +47,7 @@ def test_y_optional():
             assert a in ("", "A")
 
             b = yield optional("B", "C", self.d)
-            assert b in ("", "B", "C", "D")
+            assert b in ("", "BCD")
 
         def d(self):
             yield "D"

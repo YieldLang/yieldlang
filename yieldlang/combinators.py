@@ -41,7 +41,7 @@ def optional(*symbol: Symbol) -> ProxySymbol:
     Returns:
         Symbol: The optional symbol.
     """
-    return select(EmptyString, *symbol)
+    return select(EmptyString, symbol)
 
 
 def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:

@@ -1,5 +1,5 @@
 from yieldlang.generator import TextGenerator
-from yieldlang.types import EmptyString, Token
+from yieldlang.types import EmptyString, GeneratorSymbol, Token
 
 
 def test_y_a_eq_a():
@@ -94,7 +94,7 @@ def test_y_eof():
 
 def test_y_from():
     class G(TextGenerator):
-        def top(self):
+        def top(self) -> GeneratorSymbol:
             a = yield "A"
             assert a == "A"
 
@@ -104,7 +104,7 @@ def test_y_from():
             c = yield from self.b()
             assert c == "b"
 
-        def b(self):
+        def b(self) -> GeneratorSymbol:
             yield "2"
             return "b"
 

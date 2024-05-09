@@ -1,5 +1,13 @@
 from enum import Enum
-from typing import Callable, Generator, Iterable, Iterator, Literal, TypeAlias
+from typing import (
+    Any,
+    Callable,
+    Generator,
+    Iterable,
+    Iterator,
+    Literal,
+    TypeAlias,
+)
 
 from typing_extensions import TypeIs
 
@@ -39,7 +47,7 @@ IterableSymbol: TypeAlias = Iterable["Symbol"]
 IteratorSymbol: TypeAlias = Iterator["Symbol"]
 """Type alias for an iterator symbol type."""
 
-GeneratorSymbol: TypeAlias = Generator["Symbol", str, None]
+GeneratorSymbol: TypeAlias = Generator["Symbol", str, Any]
 """Type alias for a generator symbol type."""
 
 NonTerminal: TypeAlias = IterableSymbol | IteratorSymbol | GeneratorSymbol

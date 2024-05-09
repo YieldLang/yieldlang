@@ -86,6 +86,7 @@ exclude = '''
     | \bdist\b
     | \bdocs\b
     | \bbuild\b
+    | \btmp\b
 )
 '''
 

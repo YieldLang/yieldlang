@@ -92,6 +92,25 @@ def test_y_eof():
     assert ret == "ABCEF"
 
 
+def test_y_from():
+    class G(TextGenerator):
+        def top(self):
+            a = yield "A"
+            assert a == "A"
+
+            b = yield self.b
+            assert b == "2"
+
+            c = yield from self.b()
+            assert c == "b"
+
+        def b(self):
+            yield "2"
+            return "b"
+
+    EmptyString.join(G())
+
+
 def test_y_strale():
     class G(TextGenerator):
         def top(self):
@@ -176,6 +195,7 @@ if __name__ == "__main__":
     test_y_seq_eq_join_seq()
     test_y_eos()
     test_y_eof()
+    test_y_from()
     test_y_strale()
     test_y_fstring()
     test_y_generator()

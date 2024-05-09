@@ -22,9 +22,9 @@ from yieldlang.types import (
 class FlattenContext:
     """Context for flattening symbols."""
 
-    max_depth: int | None
+    max_depth: int | None = None
     """The maximum depth to flatten. If None, flatten all symbols."""
-    cur_depth: int
+    cur_depth: int = 0
     """The current depth of flattening."""
 
 
@@ -57,13 +57,14 @@ class TextGenerator:
     def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
         """Iterate over a symbol."""
         try:
-            for token in self._flatten(symbol):
+            ctx = FlattenContext(max_depth=None, cur_depth=0)
+            for token in self._flatten(symbol, ctx):
                 yield str(token)
         except EOFError:
             pass
 
     def _flatten_non_terminal(
-        self, nt: NonTerminal, /, ctx: FlattenContext | None
+        self, nt: NonTerminal, /, ctx: FlattenContext
     ) -> Iterator[Symbol]:
         """Flatten a non-terminal."""
         if is_nt_generator(nt):
@@ -100,23 +101,22 @@ class TextGenerator:
                 raise ValueError(f"Invalid token: {token}")
 
     def _flatten_proxy_symbol(
-        self, proxy: ProxySymbol, /, ctx: FlattenContext | None
+        self, proxy: ProxySymbol, /, ctx: FlattenContext
     ) -> Iterator[Symbol]:
         """Flatten a proxy symbol."""
         symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
         yield from self._flatten(symbol, ctx=ctx)
 
     def _flatten(
-        self, symbol: Symbol, /, ctx: FlattenContext | None = None
+        self, symbol: Symbol, /, ctx: FlattenContext
     ) -> Iterator[Symbol]:
         """Flatten a symbol.
 
         Args:
             symbol (Symbol): The symbol to flatten.
-            ctx (FlattenContext | None): The context for flattening.
+            ctx (FlattenContext): The context for flattening.
         """
-        ctx = ctx or FlattenContext(max_depth=None, cur_depth=0)
-        ctx = FlattenContext(ctx.max_depth, ctx.cur_depth + 1)
+        ctx = FlattenContext(ctx.max_depth, cur_depth=ctx.cur_depth + 1)
         if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
             yield symbol
             return None

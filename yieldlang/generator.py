@@ -1,13 +1,15 @@
-from dataclasses import dataclass
-from typing import Iterator
-
 from yieldlang.sampler import BaseSampler
 from yieldlang.types import (
     EmptyString,
+    EOSError,
+    IteratorStr,
+    IteratorSymbol,
     NonTerminal,
     ProxySymbol,
     Symbol,
     Token,
+    YContextTree,
+    YGenerator,
     is_callable,
     is_empty,
     is_non_terminal,
@@ -16,20 +18,6 @@ from yieldlang.types import (
     is_strable,
     is_token,
 )
-
-
-class EOSError(Exception):
-    """Raised when the end of the sequence is reached."""
-
-
-@dataclass
-class FlattenContext:
-    """Context for flattening symbols."""
-
-    max_depth: int | None = None
-    """The maximum depth to flatten. If None, flatten all symbols."""
-    cur_depth: int = 0
-    """The current depth of flattening."""
 
 
 class TextGenerator:
@@ -47,46 +35,56 @@ class TextGenerator:
         """Initialize the generator with a sampler."""
         self._sampler: BaseSampler = sampler or BaseSampler.default()
         """The sampler to use for sampling symbols."""
-        self._iterator: Iterator[str] = self.__iter_symbol(self.top)
+        self._root_ctx = YContextTree(max_depth=None, cur_depth=0)
+        """The root context for flattening symbols."""
+        self._generator: YGenerator = self.__iter_symbol(self.top)
         """The iterator to generate text."""
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self) -> IteratorStr:
         """Get the iterator."""
-        return self._iterator
+        return self._generator
 
     def __next__(self) -> str:
         """Get the next token."""
-        return next(self._iterator)
+        return next(self._generator)
 
-    def __iter_symbol(self, symbol: Symbol) -> Iterator[str]:
+    def __iter_symbol(self, symbol: Symbol) -> YGenerator:
         """Iterate over a symbol."""
         try:
-            ctx = FlattenContext(max_depth=None, cur_depth=0)
-            for token in self._flatten(symbol, ctx):
-                yield str(token)
+            self._root_ctx.ret_value = ""
+            for s in self._flatten(symbol, self._root_ctx):
+                self._root_ctx.ret_value += str(s)
+                yield str(s)
         except EOFError:
             pass
+        return self._root_ctx
 
     def _flatten_non_terminal(
-        self, nt: NonTerminal, /, ctx: FlattenContext
-    ) -> Iterator[Symbol]:
+        self, nt: NonTerminal, ctx: YContextTree
+    ) -> IteratorSymbol:
         """Flatten a non-terminal."""
+
+        ctx.ret_value = ""  # Initialize
+
+        def flatten_symbol(symbol: Symbol) -> IteratorSymbol:
+            for s in self._flatten(symbol, ctx):
+                ctx.ret_value += str(s)  # type: ignore
+                yield s
+
         try:
             if is_nt_generator(nt):  # Must be a generator
                 symbol = next(nt)
-                while True:  # break when StopIteration or EOSError is raised
-                    strs: list[str] = []
-                    for s in self._flatten(symbol, ctx):
-                        yield s
-                        strs.append(str(s))
-                    symbol = nt.send(EmptyString.join(strs))
+                while True:  # Break when StopIteration or EOSError is raised
+                    index = len(ctx.ret_value)
+                    yield from flatten_symbol(symbol)
+                    symbol = nt.send(ctx.ret_value[index:])
             else:  # Must be an iterable
                 for symbol in iter(nt):
-                    yield from self._flatten(symbol, ctx)
+                    yield from flatten_symbol(symbol)
         except (StopIteration, EOSError):
             pass
 
-    def _process_token(self, token: Token) -> Iterator[str]:
+    def _process_token(self, token: Token) -> IteratorStr:
         """Flatten a token."""
         match token:
             case Token.EOF:
@@ -99,38 +97,49 @@ class TextGenerator:
                 raise ValueError(f"Invalid token: {token}")
 
     def _flatten_proxy_symbol(
-        self, proxy: ProxySymbol, ctx: FlattenContext
-    ) -> Iterator[Symbol]:
+        self, proxy: ProxySymbol, ctx: YContextTree
+    ) -> IteratorSymbol:
         """Flatten a proxy symbol."""
-        symbol = proxy.fn(self, *proxy.args, **proxy.kwargs)
+        symbol = proxy.fn(self, ctx, *proxy.args, **proxy.kwargs)
         yield from self._flatten(symbol, ctx)
 
-    def _flatten(
-        self, symbol: Symbol, ctx: FlattenContext
-    ) -> Iterator[Symbol]:
+    def _flatten(self, symbol: Symbol, ctx: YContextTree) -> IteratorSymbol:
         """Flatten a symbol.
 
         Args:
             symbol (Symbol): The symbol to flatten.
             ctx (FlattenContext): The context for flattening.
         """
-        ctx = FlattenContext(ctx.max_depth, cur_depth=ctx.cur_depth + 1)
+        child = YContextTree(ctx.max_depth, cur_depth=ctx.cur_depth + 1)
+        ctx.children.append(child)
+        ctx = child
+
         if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
+            ctx.ret_value = symbol
             yield symbol
             return None
 
         match symbol:
-            case _ if is_strable(symbol):
-                yield str(symbol)
             case _ if is_empty(symbol):
+                ctx.name = "Empty"
                 yield EmptyString
+            case _ if is_strable(symbol):
+                ctx.name = "Strable"
+                ctx.ret_value = symbol
+                yield str(symbol)
             case _ if is_callable(symbol):
+                ctx.name = f"Callable: {symbol.__name__}"
                 yield from self._flatten(symbol(), ctx)
             case _ if is_token(symbol):
+                ctx.name = f"Token: {symbol}"
+                ctx.ret_value = symbol
                 yield from self._process_token(symbol)
             case _ if is_proxy_symbol(symbol):
+                ctx.name = f"Proxy: {symbol.fn.__name__}"
                 yield from self._flatten_proxy_symbol(symbol, ctx)
             case _ if is_non_terminal(symbol):
+                ctx.name = f"Iterable: {symbol.__class__.__name__}"
                 yield from self._flatten_non_terminal(symbol, ctx)
             case _:
+                ctx.name = "Invalid"
                 raise TypeError(f"Invalid symbol: {symbol}")

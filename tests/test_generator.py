@@ -1,4 +1,4 @@
-from yieldlang.generator import TextGenerator
+from yieldlang.generator import TextGenerator, YContextTree
 from yieldlang.types import EmptyString, GeneratorSymbol, Token
 
 
@@ -190,6 +190,54 @@ def test_next_generator():
     assert EmptyString.join(g) == "123"
 
 
+def test_send_generator():
+    class G(TextGenerator):
+        def top(self):
+            yield "A"
+
+            bcd = yield ("B", "C", "D")
+            assert bcd == "BCD"
+
+            yield self.e
+            yield (1, 2, 3)
+
+        def e(self):
+            yield "EF666"
+
+    g = G()
+    assert g._generator.send(None) == "A"
+    assert g._generator.send(None) == "B"
+    assert g._generator.send(None) == "C"
+    assert g._generator.send(None) == "D"
+    assert g._generator.send(None) == EmptyString.join(g.e())
+    assert EmptyString.join(g) == "123"
+
+
+def test_generator_return():
+    class G(TextGenerator):
+        def top(self):
+            yield self.a
+
+        def a(self):
+            yield ("1", self.b, "3")
+
+        def b(self):
+            yield "b"
+
+    g = G()
+    try:
+        while True:
+            next(g)
+    except StopIteration as e:
+        assert isinstance(e.value, YContextTree)
+
+    def gg():
+        ret = yield from G()
+        assert isinstance(ret, YContextTree)
+
+    list(gg())
+
+
 if __name__ == "__main__":
     test_y_a_eq_a()
     test_y_seq_eq_join_seq()
@@ -200,3 +248,5 @@ if __name__ == "__main__":
     test_y_fstring()
     test_y_generator()
     test_next_generator()
+    test_send_generator()
+    test_generator_return()

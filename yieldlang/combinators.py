@@ -1,7 +1,7 @@
 import itertools
 from typing import Iterator
 
-from yieldlang.generator import FlattenContext, TextGenerator
+from yieldlang.generator import TextGenerator, YContextTree
 from yieldlang.types import EmptyString, ProxySymbol, Symbol
 from yieldlang.utils import iter_not_empty
 
@@ -27,10 +27,10 @@ def select(*symbol: Symbol) -> ProxySymbol:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
 
-    def generator(self: TextGenerator):
+    def select(self: TextGenerator, ctx: YContextTree):
         yield self._sampler.select(*symbol)
 
-    return ProxySymbol(generator)
+    return ProxySymbol(select)
 
 
 def optional(*symbol: Symbol) -> ProxySymbol:
@@ -55,11 +55,11 @@ def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
         Symbol: The joined symbol.
     """
 
-    def generator(self: TextGenerator):
-        flatten_ctx = FlattenContext(depth, cur_depth=0)
-        iterator = self._flatten(to_seq, ctx=flatten_ctx)
-
+    def join(self: TextGenerator, ctx: YContextTree):
+        ctx.max_depth = None if depth is None else ctx.cur_depth + depth
+        iterator = self._flatten(to_seq, ctx)
         iterator = iter_not_empty(iterator)
+
         for symbol in iterator:
             yield symbol
             break
@@ -67,4 +67,4 @@ def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
             yield sep
             yield symbol
 
-    return ProxySymbol(generator)
+    return ProxySymbol(join)

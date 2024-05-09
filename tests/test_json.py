@@ -4,6 +4,7 @@ import random
 from yieldlang.combinators import optional, repeat, select
 from yieldlang.generator import TextGenerator
 from yieldlang.types import EmptyString
+from yieldlang.utils import dataclass_to_dict, minify_ctx_tree
 
 
 def accept(range: tuple[str, str], invalids: tuple[str, ...]):
@@ -145,9 +146,17 @@ def test_base_json():
     for _ in range(10):
         json_text = EmptyString.join(JSONGenerator())
         json_obj = json.loads(json_text)
-        assert isinstance(
-            json_obj, (dict, list, str, int, float, bool, type(None))
-        )
+        json_classes = (dict, list, str, int, float, bool, type(None))
+        assert isinstance(json_obj, json_classes)
+
+    def gg():
+        ret = yield from JSONGenerator()
+        dic = dataclass_to_dict(ret)
+        dic = minify_ctx_tree(dic)
+        txt = json.dumps(dic, indent=2)
+        print(txt)
+
+    list(gg())
 
 
 if __name__ == "__main__":

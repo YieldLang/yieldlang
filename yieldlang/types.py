@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import (
     Any,
@@ -38,6 +39,9 @@ Emptys = (None, EmptyString, Token.Empty)
 Strable: TypeAlias = str | int | float
 """Type alias for a stringable type."""
 
+IteratorStr: TypeAlias = Iterator[str]
+"""Type alias for an iterator of strings."""
+
 Terminal: TypeAlias = Strable | Token | None
 """Type alias for a terminal type."""
 
@@ -70,6 +74,30 @@ class ProxySymbol:
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
+
+
+@dataclass
+class YContextTree:
+    """Context for flattening symbols."""
+
+    max_depth: int | None = None
+    """The maximum depth to flatten. If None, flatten all symbols."""
+    cur_depth: int = 0
+    """The current depth of flattening."""
+    ret_value: object = None
+    """The return value of the context."""
+    children: list["YContextTree"] = field(default_factory=list)
+    """The children of the context."""
+    name: str = "Root"
+    """The name of the context."""
+
+
+YGenerator: TypeAlias = Generator[str, str | None, YContextTree]
+"""Type alias for a generator that generates text."""
+
+
+class EOSError(Exception):
+    """Raised when the end of the sequence is reached."""
 
 
 def is_proxy_symbol(obj: object) -> TypeIs[ProxySymbol]:

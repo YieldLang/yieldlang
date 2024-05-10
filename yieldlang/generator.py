@@ -141,5 +141,5 @@ class TextGenerator:
                 ctx.name = f"Iterable: {symbol.__class__.__name__}"
                 yield from self._flatten_non_terminal(symbol, ctx)
             case _:
-                ctx.name = "Invalid"
+                ctx.name = f"Invalid: {symbol}"
                 raise TypeError(f"Invalid symbol: {symbol}")

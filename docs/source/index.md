@@ -143,7 +143,11 @@ GitHub Repository <https://github.com/yieldlang/yieldlang>
 </svg>
 </p>
 
-YieldLang is a meta-language for LLMs to generate structured information.
+YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
+
+- Based on a coroutine generator and sampler architecture
+- Stream-sends characters and parses the context above into a syntax tree
+- Build formal grammars with classes, methods, and combinators
 
 **Work in progress now.**
 

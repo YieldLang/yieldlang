@@ -12,23 +12,24 @@
   <a href="https://pypi.org/project/yieldlang/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang"/></a>
 </p>
 
-## [Read the docs](https://docs.yieldlang.com/)
+## [阅读官方文档](https://docs.yieldlang.com/)
 
-YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
+YieldLang 是一个生成结构化文本 (ST) 的[元语言](https://en.wikipedia.org/wiki/Metalanguage)，它可以为大语言模型 (LLM) 提供语料或引导 LLM 生成 ST 。目前以 Python 软件包的方式提供。
 
-- Based on a coroutine generator and sampler architecture
-- Stream-sends characters and parses the context above into a syntax tree
-- Build formal grammars with classes, methods, and combinators
+- 采用基于协程的生成器、采样器架构
+- 流式发送字符的并解析上文为语法树
+- 用类、方法、组合子来构建形式文法
 
-**Work in progress now.**
 
-## Simple Usage
+**目前还处于早期开发当中。**
+
+## 简单使用
 
 ```bash
 pip install yieldlang
 ```
 
-Use combinators (e.g., `select`, `repeat`, `join`, etc.) to define grammar rules. For example, for JSON values:
+使用组合子（例如 `select`, `repeat`, `join` 等）来定义文法规则。以 JSON 值为例：
 
 ```py
 def value(self):
@@ -42,13 +43,13 @@ def value(self):
     )
 ```
 
-This is equivalent to the EBNF form:
+这等价于 EBNF 形式：
 
 ```ebnf
 value = object | array | string | number | boolean | null
 ```
 
-You can get the string just generated and add branches, loops, and other control structures to the generation rules. For example:
+你可以获取刚刚产生的字符串，并为生成规则添加分支、循环等控制结构。例如：
 
 ```py
 def diagram(self):
@@ -57,6 +58,8 @@ def diagram(self):
             yield self.flowchart
         case "sequence":
             yield self.sequence
+        case "gannt":
+            yield self.gannt
 ```
 
 ```py
@@ -67,23 +70,23 @@ def repeat4(s):
     return "".join(l)
 ```
 
-For more documentation, please visit [docs.yieldlang.com](https://docs.yieldlang.com/).
+更多信息，请参考文档：[docs.yieldlang.com](https://docs.yieldlang.com/)
 
-## Development
+## 开发本项目
 
-For more information, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).  
+更多信息请参考 [CONTRIBUTING.md](./CONTRIBUTING.md)。
 
 ### Clone
 
-In order for `git` to create symbolic links correctly, on Windows you have to run as administrator (Linux users can ignore this):
+为了让 `git` 正确创建符号链接，Windows 用户需要以管理员身份运行（Linux 请用户忽略）：
 
 ```bash
 git clone -c core.symlinks=true https://github.com/YieldLang/yieldlang.git
 ```
 
 ### Install
-
-Install the package in editable mode with the development dependencies:
+ 
+以可编辑模式安装软件包，并安装开发依赖：
 
 ```bash
 pip install -e ".[dev]"
@@ -92,17 +95,17 @@ pip install -e ".[dev]"
 ### Make
 
 ```bash
-make run-checks # Run all checks and tests
-make build      # Build the package
-make docs       # Build and watch the docs
+make run-checks # 运行所有检查和测试
+make build      # 构建软件包
+make docs       # 构建并查看文档
 ```
 
 ### Release
 
-Release the YieldLang package.
+发布 YieldLang 软件包。
 
-- Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
+- 请参考: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
 ## Acknowledgements
 
-- Python package template at [github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)
+- Python 软件包参考了模板：[github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)

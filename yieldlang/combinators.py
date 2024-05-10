@@ -39,7 +39,7 @@ def optional(*symbol: Symbol) -> ProxySymbol:
     Args:
         *symbol (Symbol): The symbol to make optional.
     Returns:
-        Symbol: The optional symbol.
+        ProxySymbol: The optional symbol.
     """
     return select(EmptyString, symbol)
 
@@ -50,9 +50,9 @@ def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
     Args:
         sep (Symbol): The separator symbol.
         to_seq (Symbol): The symbol to join.
-        depth (int | None): The maximum depth to flatten. If None, depth is unlimited.
+        depth (int | None): The maximum depth to flatten. If ``None``, depth is unlimited.
     Returns:
-        Symbol: The joined symbol.
+        ProxySymbol: The joined symbol.
     """
 
     def join(self: TextGenerator, ctx: YContextTree):

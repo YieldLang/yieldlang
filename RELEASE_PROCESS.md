@@ -1,4 +1,6 @@
-# GitHub Release Process
+# Release Process
+
+Release process for the YieldLang.
 
 ## Steps
 

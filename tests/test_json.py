@@ -75,7 +75,7 @@ class JSONGenerator(TextGenerator):
         yield select(
             self.digit,
             select(*'ABCDEF'),
-            select(*'abcdef')
+            select(*'abcdef'),
         )
 
     def digit(self):
@@ -107,7 +107,7 @@ class JSONGenerator(TextGenerator):
     def exponent(self):
         yield optional(select(
             ('E', self.sign, self.digits),
-            ('e', self.sign, self.digits)
+            ('e', self.sign, self.digits),
         ))
 
     def sign(self):
@@ -126,7 +126,7 @@ class JSONGenerator(TextGenerator):
             self.string,
             self.number,
             self.boolean,
-            self.null
+            self.null,
         )
 
     def element(self):
@@ -137,7 +137,7 @@ class JSONGenerator(TextGenerator):
             ('\u0020', self.ws),
             ('\u000A', self.ws),
             ('\u000D', self.ws),
-            ('\u0009', self.ws)
+            ('\u0009', self.ws),
         ))
 # fmt: on
 

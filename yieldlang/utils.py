@@ -54,18 +54,3 @@ def dataclass_to_json(dc: object):
 def dataclass_to_dict(dc):
     """Convert a dataclass to a dictionary."""
     return dataclasses.asdict(dc)
-
-
-def minify_ctx_tree(ctx_tree_dict: dict):
-    """Minify a context tree dictionary by removing empty values."""
-    new_dict = {}
-    for k, v in ctx_tree_dict.items():
-        if v is None or v == []:
-            continue
-        elif isinstance(v, dict):
-            new_dict[k] = minify_ctx_tree(v)
-        elif isinstance(v, list):
-            new_dict[k] = [minify_ctx_tree(item) for item in v]
-        else:
-            new_dict[k] = v
-    return new_dict

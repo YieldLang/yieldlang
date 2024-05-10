@@ -105,11 +105,11 @@ def diagram(self):
 在生成器中使用循环语句。例如：
 
 ```py
-def repeat4(s):
+def repeat4(self, s):
     l = []
     for _ in range(4):
         l.append((yield s))
-    return "".join(l) # 或者做我自己的处理
+    self.do_my_own_thing(l)
 ```
 
 打印生成的上下文树（可转化为抽象语法树）：

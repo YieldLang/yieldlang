@@ -83,11 +83,11 @@ def diagram(self):
 Use a loop statement in the generator. For example:
 
 ```py
-def repeat4(s):
+def repeat4(self, s):
     l = []
     for _ in range(4):
         l.append((yield s))
-    return "".join(l) # or do my own processing
+    self.do_my_own_thing(l)
 ```
 
 Print the generated context tree (convertible to an abstract syntax tree):

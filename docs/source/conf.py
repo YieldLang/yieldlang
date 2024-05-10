@@ -18,7 +18,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.abspath("../../"))
 
-from yieldlang import VERSION, VERSION_SHORT  # noqa: E402
+from yieldlang.version import VERSION, VERSION_SHORT
 
 # -- Project information -----------------------------------------------------
 

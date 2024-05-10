@@ -3,8 +3,8 @@ import random
 
 from yieldlang.combinators import optional, repeat, select
 from yieldlang.generator import TextGenerator
+from yieldlang.tree import minify_ctx_tree
 from yieldlang.types import EmptyString
-from yieldlang.utils import dataclass_to_dict, minify_ctx_tree
 
 
 def accept(range: tuple[str, str], invalids: tuple[str, ...]):
@@ -151,8 +151,7 @@ def test_base_json():
 
     def gg():
         ret = yield from JSONGenerator()
-        dic = dataclass_to_dict(ret)
-        dic = minify_ctx_tree(dic)
+        dic = minify_ctx_tree(ret)
         txt = json.dumps(dic, indent=2)
         print(txt)
 

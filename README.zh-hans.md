@@ -12,6 +12,8 @@
   <a href="https://pypi.org/project/yieldlang/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang"/></a>
 </p>
 
+[English](./README.md) | **简体中文**
+
 ## [阅读官方文档](https://docs.yieldlang.com/)
 
 YieldLang 是一个生成结构化文本 (ST) 的[元语言](https://en.wikipedia.org/wiki/Metalanguage)，它可以为大语言模型 (LLM) 提供语料或引导 LLM 生成 ST 。目前以 Python 软件包的方式提供。
@@ -29,7 +31,29 @@ YieldLang 是一个生成结构化文本 (ST) 的[元语言](https://en.wikipedi
 pip install yieldlang
 ```
 
-使用组合子（例如 `select`, `repeat`, `join` 等）来定义文法规则。以 JSON 值为例：
+导入 `TextGenerator` 类并定义生成器。其中 `top` 总是作为生成器的入口。你可以将生成器当作迭代器，用 `for` 循环来遍历生成的文本。例如：
+
+```py
+from yieldlang import TextGenerator
+
+class G(TextGenerator):
+    def top(self):
+        yield "Hello, World!"
+
+for text in G():
+    print(text)
+```
+
+为生成器设置一个采样器。例如设置随机采样：
+
+```py
+from yieldlang import RandomSampler
+
+sampler = RandomSampler()
+print(list(G(sampler)))
+```
+
+在 `TextGenerator` 中使用组合子（例如 `select`, `repeat`, `join` 等）来定义文法规则。以 JSON 值为例：
 
 ```py
 def value(self):
@@ -46,8 +70,24 @@ def value(self):
 这等价于 EBNF 形式：
 
 ```ebnf
-value = object | array | string | number | boolean | null
+value = object 
+      | array
+      | string
+      | number
+      | boolean
+      | null
 ```
+
+轻松的产生一个序列。例如：
+
+```py
+def array(self):
+    yield select(
+        ('[', self.ws, ']'),
+        ('[', self.elements, ']')
+    )
+```
+
 
 你可以获取刚刚产生的字符串，并为生成规则添加分支、循环等控制结构。例如：
 
@@ -62,12 +102,22 @@ def diagram(self):
             yield self.gannt
 ```
 
+在生成器中使用循环语句。例如：
+
 ```py
 def repeat4(s):
     l = []
     for _ in range(4):
         l.append((yield s))
-    return "".join(l)
+    return "".join(l) # 或者做我自己的处理
+```
+
+打印生成的上下文树（可转化为抽象语法树）：
+
+```py
+def print_context_tree():
+    ctx = yield from G()
+    print(ctx)
 ```
 
 更多信息，请参考文档：[docs.yieldlang.com](https://docs.yieldlang.com/)

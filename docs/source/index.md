@@ -1,39 +1,5 @@
 # **YieldLang**
 
-```{toctree}
-:maxdepth: 2
-:hidden:
-:caption: Getting started
-
-overview
-installation
-```
-
-```{toctree}
-:hidden:
-:caption: Development
-
-CHANGELOG
-CONTRIBUTING
-```
-
-```{toctree}
-:hidden:
-:caption: API
-
-genindex
-modindex
-autoapi/index
-```
-
-```{toctree}
-:hidden:
-:caption: Link
-
-License <https://github.com/YieldLang/yieldlang/blob/main/LICENSE>
-GitHub Repository <https://github.com/yieldlang/yieldlang>
-```
-
 <p align="center">
 <svg class="typst-doc" viewBox="0 0 45.080000000000005 20" width="38.2%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
     <style>
@@ -143,6 +109,8 @@ GitHub Repository <https://github.com/yieldlang/yieldlang>
 </svg>
 </p>
 
+## Introduction
+
 YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
 
 - Based on a coroutine generator and sampler architecture
@@ -152,9 +120,40 @@ YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for g
 **Work in progress now.**
 
 
-## Indices and tables
+## Table of contents
 
-```{eval-rst}
-* :ref:`genindex`
-* :ref:`modindex`
+
+```{toctree}
+:maxdepth: 2
+:caption: Getting Started
+
+overview
+installation
+```
+
+```{toctree}
+:caption: APIs
+:maxdepth: 2
+
+API Index <genindex>
+modindex
+autoapi/index
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Developments
+
+CHANGELOG
+CONTRIBUTING
+development
+RELEASE_PROCESS
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Links
+
+License <https://github.com/YieldLang/yieldlang/blob/main/LICENSE>
+GitHub Repository <https://github.com/yieldlang/yieldlang>
 ```

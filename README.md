@@ -12,6 +12,8 @@
   <a href="https://pypi.org/project/yieldlang/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/yieldlang"/></a>
 </p>
 
+**English** | [简体中文](./README.zh-hans.md)
+
 ## [Read the docs](https://docs.yieldlang.com/)
 
 YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
@@ -28,7 +30,30 @@ YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for g
 pip install yieldlang
 ```
 
-Use combinators (e.g., `select`, `repeat`, `join`, etc.) to define grammar rules. For example, for JSON values:
+Import the `TextGenerator` class and define a generator. The `top` method always serves as the entry point for the generator. You can treat the generator as an iterator and use a `for` loop to iterate over the generated text. For example:
+
+```py
+from yieldlang import TextGenerator
+
+class G(TextGenerator):
+    def top(self):
+        yield "Hello, World!"
+
+for text in G():
+    print(text)
+```
+
+Set a sampler for the generator. For example, set random sampling:
+
+```py
+from yieldlang import RandomSampler
+
+sampler = RandomSampler()
+print(list(G(sampler)))
+```
+
+Use combinators (e.g., `select`, `repeat`, `join`, etc.) to define grammar rules in the `TextGenerator`. For example, for JSON values:
+
 
 ```py
 def value(self):
@@ -45,7 +70,22 @@ def value(self):
 This is equivalent to the EBNF form:
 
 ```ebnf
-value = object | array | string | number | boolean | null
+value = object 
+      | array
+      | string
+      | number
+      | boolean
+      | null
+```
+
+Generate a sequence easily. For example:
+
+```py
+def array(self):
+    yield select(
+        ('[', self.ws, ']'),
+        ('[', self.elements, ']')
+    )
 ```
 
 You can get the string just generated and add branches, loops, and other control structures to the generation rules. For example:
@@ -59,12 +99,22 @@ def diagram(self):
             yield self.sequence
 ```
 
+Use a loop statement in the generator. For example:
+
 ```py
 def repeat4(s):
     l = []
     for _ in range(4):
         l.append((yield s))
-    return "".join(l)
+    return "".join(l) # or do my own processing
+```
+
+Print the generated context tree (convertible to an abstract syntax tree):
+
+```py
+def print_context_tree():
+    ctx = yield from G()
+    print(ctx)
 ```
 
 For more documentation, please visit [docs.yieldlang.com](https://docs.yieldlang.com/).

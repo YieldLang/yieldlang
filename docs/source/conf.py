@@ -89,6 +89,9 @@ napoleon_type_aliases: dict[str, str] = {}
 
 toc_object_entries_show_parents = "hide"
 
+gettext_uuid = True
+gettext_compact = False
+
 # Tell myst-parser to assign header anchors for h1-h3.
 myst_heading_anchors = 3
 

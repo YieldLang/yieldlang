@@ -3,6 +3,8 @@ Overview
 
 YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for LLMs to process (produce and parse) structured info.
 
+- View our [publications](publications.md) for more information.
+
 ## Simple Usage
 
 ```bash

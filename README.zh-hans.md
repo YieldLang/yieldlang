@@ -159,3 +159,9 @@ make docs       # 构建并查看文档
 ## Acknowledgements
 
 - Python 软件包参考了模板：[github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)
+
+## Publications
+
+- [引导大语言模型生成计算机可解析内容](https://arxiv.org/abs/2404.05499)  
+  作者: [王家晔](https://orcid.org/0009-0007-5832-2474) 日期: `2024-03-26 22:54:14`
+  > 本文提出了一种引导LLMs生成计算机高可用内容的方案，无需微调和额外的神经网络推理，通过提前约定的上下文无关文法 (Context-Free Grammar, CFG) 引入基于协程的内容生成约束机制，在自回归模型Transformer的解码阶段引导模型采样正确的词元，以构成符合程序约定的形式语言。这将有效地提升LLMs生成目标数据结构、类型或指令的稳定性和一致性，降低应用开发和集成的难度。本文作者先通过“匹配括号对”实验验证了GPT-2和Gemma等模型在生成DSL长度分别大于36和282时错误率就达到了95%，说明了当前LLMs在特定DSL生成上的性能问题。本文作者还提出了基于协程的DSL生成框架YieldLang，并使用LLMs在多个任务数据集上进行了实验，包括JSON、Mermaid流图和函数调用表达式生成等任务。这些实验表明本文的方法相比基准，其准确率提升到了原来的109%到1160%，并且在最好的情况下能够将LLMs生成JSON的采样次数降低到基准的约16.5%，这将有效地提高LLMs生成内容对计算机程序的可用性。

@@ -1,0 +1,6 @@
+Publications
+===
+
+- [Guiding Large Language Models to Generate Computer-Parsable Content](https://arxiv.org/abs/2404.05499)  
+  Author: [Jiaye Wang](https://orcid.org/0009-0007-5832-2474) Date: `2024-03-26 22:54:14`
+  > We propose a method to guide Large Language Models (LLMs) in generating structured content adhering to specific conventions without fine-tuning. By utilizing coroutine-based content generation constraints through a pre-agreed context-free grammar (CFG), LLMs are directed during decoding to produce formal language compliant outputs. This enhances stability and consistency in generating target data structures, types, or instructions, reducing application development complexities. Experimentally, error rates of GPT-2 and Gemma exceed 95% for DSLs longer than 36 and 282 tokens, respectively. We introduce YieldLang, a coroutine-based DSL generation framework, and evaluate it with LLMs on various tasks including JSON and Mermaid flowchart generation. Compared to benchmarks, our approach improves accuracy by 1.09 to 11.6 times, with LLMs requiring only about 16.5% of the samples to generate JSON effectively. This enhances usability of LLM-generated content for computer programs.

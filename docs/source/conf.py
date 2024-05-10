@@ -23,7 +23,9 @@ from yieldlang import VERSION, VERSION_SHORT  # noqa: E402
 # -- Project information -----------------------------------------------------
 
 project = "yieldlang"
-copyright = f"{datetime.today().year} HK-SHAO. All Rights Reserved."
+copyright = (
+    f"{datetime.today().year} HK-SHAO and contributors. All Rights Reserved."
+)
 author = "HK-SHAO"
 version = VERSION_SHORT
 release = VERSION

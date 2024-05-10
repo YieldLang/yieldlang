@@ -129,6 +129,7 @@ YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for g
 
 overview
 installation
+publications
 ```
 
 ```{toctree}
@@ -142,7 +143,7 @@ autoapi/index
 
 ```{toctree}
 :maxdepth: 2
-:caption: Developments
+:caption: Development
 
 CHANGELOG
 CONTRIBUTING

@@ -37,7 +37,6 @@ def minify_ctx_tree(ctx: YContextTree) -> YMiniTree:
     ret_dict: YMiniTree = {}
     name = ctx.name
     value = ctx.ret_value
-    children = ctx.children
 
     value_empty = is_empty(value)
 
@@ -49,13 +48,13 @@ def minify_ctx_tree(ctx: YContextTree) -> YMiniTree:
     if not value_empty:
         ret_dict["value"] = value
 
-    children_len = len(children)
+    children_len = len(ctx.children)
 
     if children_len == 1:
-        children = list(map(minify_ctx_tree, find(children[0])))
+        children = list(map(minify_ctx_tree, find(ctx.children[0])))
         ret_dict["children"] = children
     elif children_len > 1:
-        children = list(map(minify_ctx_tree, children))
+        children = list(map(minify_ctx_tree, ctx.children))
         ret_dict["children"] = children
 
     return ret_dict

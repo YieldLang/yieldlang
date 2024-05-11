@@ -1,6 +1,17 @@
 # **YieldLang**
 
-<p align="center">
+<style>
+	.hero svg {
+		transition: all 0.3s ease;
+	}
+
+	.hero svg:hover {
+		transform: scale(1.2);
+		transition: all 0.3s ease;
+	}
+</style>
+
+<p align="center" class="hero">
 <svg class="typst-doc" viewBox="0 0 45.080000000000005 20" width="38.2%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
     <style>
         #pr {

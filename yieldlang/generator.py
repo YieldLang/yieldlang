@@ -1,4 +1,5 @@
 from yieldlang.sampler import BaseSampler
+from yieldlang.tree import YContextTree, YGenerator
 from yieldlang.types import (
     EmptyString,
     EOSError,
@@ -8,8 +9,6 @@ from yieldlang.types import (
     ProxySymbol,
     Symbol,
     Token,
-    YContextTree,
-    YGenerator,
     is_callable,
     is_empty,
     is_non_terminal,
@@ -35,7 +34,7 @@ class TextGenerator:
         """Initialize the generator with a sampler."""
         self._sampler: BaseSampler = sampler or BaseSampler.default()
         """The sampler to use for sampling symbols."""
-        self._root_ctx = YContextTree(max_depth=-1, cur_depth=0)
+        self._top_ctx = YContextTree(max_depth=-1, cur_depth=0)
         """The root context for flattening symbols."""
         self._generator: YGenerator = self.__iter_symbol(self.top)
         """The iterator to generate text."""
@@ -51,37 +50,30 @@ class TextGenerator:
     def __iter_symbol(self, symbol: Symbol) -> YGenerator:
         """Iterate over a symbol."""
         try:
-            self._root_ctx.ret_value = ""
-            for s in self._flatten(symbol, self._root_ctx):
-                self._root_ctx.ret_value += str(s)
+            self._top_ctx.ret_value = []
+            for s in self._flatten(symbol, self._top_ctx):
+                self._top_ctx.ret_value.append(s)
                 yield str(s)
         except EOFError:
             pass
-        return self._root_ctx
+        return self._top_ctx
 
     def _flatten_non_terminal(
         self, nt: NonTerminal, ctx: YContextTree
     ) -> IteratorSymbol:
         """Flatten a non-terminal."""
-
-        ctx.ret_value = ""  # Initialize
-
-        def flatten_symbol(symbol: Symbol) -> IteratorSymbol:
-            for s in self._flatten(symbol, ctx):
-                ctx.ret_value += str(s)  # type: ignore
-                yield s
-
         try:
             if is_nt_generator(nt):  # Must be a generator
                 symbol = next(nt)
                 while True:  # Break when StopIteration or EOSError is raised
-                    index = len(ctx.ret_value)
-                    yield from flatten_symbol(symbol)
-                    symbol = nt.send(ctx.ret_value[index:])
+                    strs: list[str] = []
+                    for s in self._flatten(symbol, ctx):
+                        strs.append(str(s))
+                        yield s
+                    symbol = nt.send("".join(strs))
             else:  # Must be an iterable
                 for symbol in iter(nt):
-                    yield from flatten_symbol(symbol)
-            ctx.ret_value = ""
+                    yield from self._flatten(symbol, ctx)
         except (StopIteration, EOSError):
             pass
 
@@ -111,8 +103,11 @@ class TextGenerator:
             symbol (Symbol): The symbol to flatten.
             ctx (FlattenContext): The context for flattening.
         """
-        child = YContextTree(ctx.max_depth, cur_depth=ctx.cur_depth + 1)
+        child = YContextTree()
+        child.cur_depth = ctx.cur_depth + 1
+        child.max_depth = ctx.max_depth
         ctx.children.append(child)
+        child.parent = ctx
         ctx = child
 
         if ctx.max_depth > -1 and ctx.cur_depth > ctx.max_depth:
@@ -127,7 +122,7 @@ class TextGenerator:
             case _ if is_strable(symbol):
                 ctx.name = "Strable"
                 ctx.ret_value = symbol
-                yield str(symbol)
+                yield symbol
             case _ if is_callable(symbol):
                 ctx.name = f"Callable: {symbol.__name__}"
                 yield from self._flatten(symbol(), ctx)

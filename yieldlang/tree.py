@@ -1,8 +1,56 @@
-from typing import TypedDict
+from dataclasses import dataclass, field
+from typing import Generator, Optional, TypeAlias, TypedDict
 
 from typing_extensions import NotRequired
 
-from yieldlang.types import YContextTree, is_empty
+from yieldlang.types import Symbol, is_empty
+
+
+class YContextDict(TypedDict):
+    """Dictionary for the context tree."""
+
+    name: str
+    """The name of the context."""
+    max_depth: int
+    """The maximum depth to flatten."""
+    cur_depth: int
+    """The current depth of flattening."""
+    ret_value: list[Symbol] | Symbol | None
+    """The return value of the context."""
+    children: list["YContextDict"]
+    """The children of the context."""
+
+
+@dataclass
+class YContextTree:
+    """Context for YieldLang TextGenerator."""
+
+    name: str = "Top"
+    """The name of the context."""
+    max_depth: int = -1
+    """The maximum depth to flatten. If ``-1``, flatten all symbols."""
+    cur_depth: int = 0
+    """The current depth of flattening."""
+    ret_value: list[Symbol] | Symbol | None = None
+    """The return value of the context."""
+    parent: Optional["YContextTree"] = None
+    """The parent of the context."""
+    children: list["YContextTree"] = field(default_factory=list)
+    """The children of the context."""
+
+    def to_dict(self) -> YContextDict:
+        """Convert the context to a dictionary."""
+        return {
+            "name": self.name,
+            "max_depth": self.max_depth,
+            "cur_depth": self.cur_depth,
+            "ret_value": self.ret_value,
+            "children": [c.to_dict() for c in self.children],
+        }
+
+
+YGenerator: TypeAlias = Generator[str, str | None, YContextTree]
+"""Type alias for a generator that generates text."""
 
 
 class YMiniTree(TypedDict):
@@ -10,7 +58,7 @@ class YMiniTree(TypedDict):
 
     name: NotRequired[str]
     """Name of the y-mini tree. Not required if root or leaf."""
-    value: NotRequired[object]
+    value: NotRequired[str]
     """Value of the y-mini tree. Required only if root or leaf."""
     children: NotRequired[list["YMiniTree"]]
     """Children of the y-mini tree. Not required if leaf."""
@@ -46,7 +94,12 @@ def minify_ctx_tree(ctx: YContextTree) -> YMiniTree:
         ret_dict["value"] = ""
 
     if not value_empty:
-        ret_dict["value"] = value
+        if isinstance(value, list):
+            ret_dict["value"] = "".join(map(str, value))
+        elif isinstance(value, str):
+            ret_dict["value"] = value
+        else:
+            ret_dict["value"] = str(value)
 
     children_len = len(ctx.children)
 

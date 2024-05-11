@@ -47,7 +47,11 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx_copybutton",
     "autoapi.extension",
+    "sphinx_sitemap",
 ]
+
+html_baseurl = "https://docs.yieldlang.com/"
+sitemap_url_scheme = "{lang}latest/{link}"
 
 autoapi_dirs = [
     os.path.abspath("../../yieldlang/"),

@@ -16,7 +16,7 @@
 
 ## [Read the docs](https://docs.yieldlang.com/)
 
-YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
+YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a [Python package](https://pypi.org/project/yieldlang/).
 
 - 🧠 Based on a coroutine generator and sampler architecture
 - 🤖 Stream-sends characters and parses the context above into a syntax tree
@@ -149,16 +149,14 @@ make docs       # Build and watch the docs
 
 ### Release
 
-Release the YieldLang package.
-
-- Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
-
-## Acknowledgements
-
-- Python package template at [github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)
-
+Release the YieldLang package. Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
 ## Publications
 
 - [Guiding Large Language Models to Generate Computer-Parsable Content](https://arxiv.org/abs/2404.05499)  
   Author: [Jiaye Wang](https://orcid.org/0009-0007-5832-2474) Date: `2024-03-26 22:54:14`
+
+
+## Acknowledgements
+
+- Python package template at [github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)

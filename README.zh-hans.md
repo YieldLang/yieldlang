@@ -16,7 +16,7 @@
 
 ## [阅读官方文档](https://docs.yieldlang.com/)
 
-YieldLang 是一个生成结构化文本 (ST) 的[元语言](https://en.wikipedia.org/wiki/Metalanguage)，它可以为大语言模型 (LLM) 提供语料或引导 LLM 生成 ST 。目前以 Python 软件包的方式提供。
+YieldLang 是一个生成结构化文本 (ST) 的[元语言](https://en.wikipedia.org/wiki/Metalanguage)，它可以为大语言模型 (LLM) 提供语料或引导 LLM 生成 ST 。目前以 [Python 软件包](https://pypi.org/project/yieldlang/)的方式提供。
 
 - 🧠 采用基于协程的生成器、采样器架构
 - 🤖 流式发送字符的并解析上文为语法树
@@ -152,15 +152,14 @@ make docs       # 构建并查看文档
 
 ### Release
 
-发布 YieldLang 软件包。
-
-- 请参考: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
-
-## Acknowledgements
-
-- Python 软件包参考了模板：[github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)
+发布 YieldLang 软件包。请参考: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
 ## Publications
 
 - [引导大语言模型生成计算机可解析内容](https://arxiv.org/abs/2404.05499)  
   作者：[王家晔](https://orcid.org/0009-0007-5832-2474) 日期：`2024-03-26 22:54:14`
+
+
+## Acknowledgements
+
+- Python 软件包参考了模板：[github.com/allenai/python-package-template](https://github.com/allenai/python-package-template)

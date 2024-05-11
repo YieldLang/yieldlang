@@ -27,9 +27,7 @@ make docs       # Build and watch the docs
 
 ## Release
 
-Release the YieldLang package.
-
-- Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
+Release the YieldLang package. Visit: [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
 ## Acknowledgements
 

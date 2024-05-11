@@ -78,6 +78,8 @@ autoapi_options = [
     "imported-members",
 ]
 
+autoapi_own_page_level = "module"
+
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = True

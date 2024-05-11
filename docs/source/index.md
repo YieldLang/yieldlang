@@ -132,7 +132,7 @@ YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for g
 
 
 ```{toctree}
-:maxdepth: 3
+:maxdepth: 2
 :caption: Getting Started
 
 overview
@@ -143,8 +143,7 @@ publications
 :caption: APIs
 :maxdepth: 2
 
-API Index <genindex>
-modindex
+Index <genindex>
 autoapi/index
 ```
 

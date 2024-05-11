@@ -1,8 +1,5 @@
-# Simple Usage
-
-```bash
-pip install yieldlang
-```
+Simple Usage
+===
 
 Import the `TextGenerator` class and define a generator. The `top` method always serves as the entry point for the generator. You can treat the generator as an iterator and use a `for` loop to iterate over the generated text. For example:
 

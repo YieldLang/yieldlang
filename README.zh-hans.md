@@ -44,12 +44,10 @@ for text in G():
     print(text)
 ```
 
-为生成器设置一个采样器。例如设置随机采样：
+为生成器设置另一个采样器（默认是随机采样）。例如设置大语言模型采样器：
 
 ```py
-from yieldlang import RandomSampler
-
-sampler = RandomSampler()
+sampler = MyLLMSampler()
 print(list(G(sampler)))
 ```
 
@@ -96,8 +94,6 @@ def diagram(self):
     match (yield self.diagram_type):
         case "flowchart":
             yield self.flowchart
-        case "sequence":
-            yield self.sequence
         case "gannt":
             yield self.gannt
 ```

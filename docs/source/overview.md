@@ -24,12 +24,10 @@ for text in G():
     print(text)
 ```
 
-Set a sampler for the generator. For example, set random sampling:
+Set another sampler for the generator (default is random sampling). For example, set the large language model sampler:
 
 ```py
-from yieldlang import RandomSampler
-
-sampler = RandomSampler()
+sampler = MyLLMSampler()
 print(list(G(sampler)))
 ```
 
@@ -76,8 +74,8 @@ def diagram(self):
     match (yield self.diagram_type):
         case "flowchart":
             yield self.flowchart
-        case "sequence":
-            yield self.sequence
+        case "gannt":
+            yield self.gannt
 ```
 
 Use a loop statement in the generator. For example:

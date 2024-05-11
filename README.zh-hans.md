@@ -102,7 +102,7 @@ def diagram(self):
 
 ```py
 def repeat4(self, s):
-    l = []
+    l: list[str] = []
     for _ in range(4):
         l.append((yield s))
     self.do_my_own_thing(l)

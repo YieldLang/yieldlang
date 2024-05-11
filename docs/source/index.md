@@ -122,11 +122,8 @@
 
 ## Introduction
 
-YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a Python package.
+YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for generating structured text (ST) that can provide corpora for large language models (LLMs) or guide LLMs to generate ST. Currently provided as a [Python package](https://pypi.org/project/yieldlang/).
 
-- Based on a coroutine generator and sampler architecture
-- Stream-sends characters and parses the context above into a syntax tree
-- Build formal grammars with classes, methods, and combinators
 
 **Work in progress now.**
 
@@ -135,11 +132,10 @@ YieldLang is a [meta-language](https://en.wikipedia.org/wiki/Metalanguage) for g
 
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 3
 :caption: Getting Started
 
 overview
-installation
 publications
 ```
 

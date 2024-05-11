@@ -1,6 +1,10 @@
 import random
+from typing import TYPE_CHECKING
 
 from yieldlang.types import Symbol
+
+if TYPE_CHECKING:
+    from yieldlang.generator import TextGenerator
 
 
 class BaseSampler:
@@ -11,7 +15,7 @@ class BaseSampler:
         """Get the default sampler."""
         return RandomSampler()
 
-    def select(self, *symbol: Symbol) -> Symbol:
+    def select(self, g: "TextGenerator", *symbol: Symbol) -> Symbol:
         """Select a symbol from a set of symbols.
 
         Warning:
@@ -23,6 +27,6 @@ class BaseSampler:
 class RandomSampler(BaseSampler):
     """Random sampler."""
 
-    def select(self, *symbol: Symbol) -> Symbol:
+    def select(self, g: "TextGenerator", *symbol: Symbol) -> Symbol:
         """Randomly select a symbol from a set of symbols."""
         return random.choice(symbol)

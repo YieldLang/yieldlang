@@ -35,7 +35,7 @@ class TextGenerator:
         """Initialize the generator with a sampler."""
         self._sampler: BaseSampler = sampler or BaseSampler.default()
         """The sampler to use for sampling symbols."""
-        self._root_ctx = YContextTree(max_depth=None, cur_depth=0)
+        self._root_ctx = YContextTree(max_depth=-1, cur_depth=0)
         """The root context for flattening symbols."""
         self._generator: YGenerator = self.__iter_symbol(self.top)
         """The iterator to generate text."""
@@ -81,6 +81,7 @@ class TextGenerator:
             else:  # Must be an iterable
                 for symbol in iter(nt):
                     yield from flatten_symbol(symbol)
+            ctx.ret_value = ""
         except (StopIteration, EOSError):
             pass
 
@@ -114,7 +115,7 @@ class TextGenerator:
         ctx.children.append(child)
         ctx = child
 
-        if ctx.max_depth is not None and ctx.cur_depth > ctx.max_depth:
+        if ctx.max_depth > -1 and ctx.cur_depth > ctx.max_depth:
             ctx.ret_value = symbol
             yield symbol
             return None

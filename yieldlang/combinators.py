@@ -28,7 +28,7 @@ def select(*symbol: Symbol) -> ProxySymbol:
     """
 
     def select(self: TextGenerator, ctx: YContextTree):
-        yield self._sampler.select(*symbol)
+        yield self._sampler.select(self, *symbol)
 
     return ProxySymbol(select)
 
@@ -44,19 +44,19 @@ def optional(*symbol: Symbol) -> ProxySymbol:
     return select(EmptyString, symbol)
 
 
-def join(sep: Symbol, to_seq: Symbol, depth: int | None = 1) -> ProxySymbol:
+def join(sep: Symbol, to_seq: Symbol, depth: int = -1) -> ProxySymbol:
     """Join a sequence of symbols with a separator.
 
     Args:
         sep (Symbol): The separator symbol.
         to_seq (Symbol): The symbol to join.
-        depth (int | None): The maximum depth to flatten. If ``None``, depth is unlimited.
+        depth (int | None): The maximum depth to flatten. If negative, flatten all symbols.
     Returns:
         ProxySymbol: The joined symbol.
     """
 
     def join(self: TextGenerator, ctx: YContextTree):
-        ctx.max_depth = None if depth is None else ctx.cur_depth + depth
+        ctx.max_depth = -1 if depth < 0 else ctx.cur_depth + depth
         iterator = self._flatten(to_seq, ctx)
         iterator = iter_not_empty(iterator)
 

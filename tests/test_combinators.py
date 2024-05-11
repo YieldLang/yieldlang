@@ -59,8 +59,11 @@ def test_y_optional():
 def test_y_join():
     class G(TextGenerator):
         def top(self):
-            a = yield join(", ", self.seq, depth=None)
+            a = yield join(", ", self.seq)
             assert a == "A, B, C, E"
+
+            a = yield join(", ", self.seq, depth=+2)
+            assert a == "A, B, CE"
 
             b = yield join(", ", 1234)
             assert b == "1234"
@@ -71,16 +74,16 @@ def test_y_join():
             d = yield join(", ", (1, 2, 3))
             assert d == "1, 2, 3"
 
-            e = yield join(0, join(1, range(3)), depth=None)
+            e = yield join(0, join(1, range(3)))
             assert e == "001010102"
 
             d = yield join(", ", list(repeat("6", 3)))
             assert d == "6, 6, 6"
 
-            f = yield join("-", self.abc)
+            f = yield join("-", self.abc, depth=0)
             assert f == "0ABCE"
 
-            g = yield join("-", self.abc())
+            g = yield join("-", self.abc(), depth=1)
             g2 = yield join("-", self.abc, depth=2)
             assert g == g2 == "0-ABCE"
 
@@ -104,7 +107,7 @@ def test_y_join():
             assert k == "0-1-1-1-1-2-2-1-1-2-2-33"
 
             x = yield join("-", array, depth=4)
-            y = yield join("-", array, depth=None)
+            y = yield join("-", array, depth=-1)
             assert y == "0-1-1-1-1-2-2-1-1-2-2-3-3"
             assert x == y
 

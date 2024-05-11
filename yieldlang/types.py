@@ -80,8 +80,8 @@ class ProxySymbol:
 class YContextTree:
     """Context for flattening symbols."""
 
-    max_depth: int | None = None
-    """The maximum depth to flatten. If None, flatten all symbols."""
+    max_depth: int = -1
+    """The maximum depth to flatten. If ``-1``, flatten all symbols."""
     cur_depth: int = 0
     """The current depth of flattening."""
     ret_value: object = None

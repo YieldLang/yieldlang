@@ -1,5 +1,5 @@
 from yieldlang.generator import TextGenerator, YContextTree
-from yieldlang.types import EmptyString, GeneratorSymbol, Token
+from yieldlang.types import EmptyString, GeneratorSymbol, Token, is_empty
 
 
 def test_y_a_eq_a():
@@ -238,6 +238,18 @@ def test_generator_return():
     list(gg())
 
 
+def test_cur_ctx():
+    from .test_json import JSONGenerator
+
+    g = JSONGenerator()
+    for i in g:
+        ctx_retval = g._cur_ctx.ret_value
+        if is_empty(ctx_retval):
+            assert i == ""
+        else:
+            assert ctx_retval == i
+
+
 if __name__ == "__main__":
     test_y_a_eq_a()
     test_y_seq_eq_join_seq()
@@ -250,3 +262,4 @@ if __name__ == "__main__":
     test_next_generator()
     test_send_generator()
     test_generator_return()
+    test_cur_ctx()

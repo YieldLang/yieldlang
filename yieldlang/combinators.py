@@ -27,8 +27,8 @@ def select(*symbol: Symbol) -> ProxySymbol:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
 
-    def select(self: TextGenerator, ctx: YContextTree):
-        yield self._sampler.select(self, *symbol)
+    def select(g: TextGenerator, ctx: YContextTree):
+        yield g._sampler.select(g, ctx, *symbol)
 
     return ProxySymbol(select)
 

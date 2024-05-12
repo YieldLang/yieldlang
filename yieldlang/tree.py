@@ -1,7 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Generator, Optional, TypeAlias, TypedDict
 
-from typing_extensions import NotRequired
+try:
+    from typing import NotRequired
+except ImportError:
+    from typing_extensions import NotRequired
 
 from yieldlang.types import Symbol, is_empty
 

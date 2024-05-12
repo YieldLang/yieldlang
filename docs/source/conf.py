@@ -78,7 +78,9 @@ autoapi_options = [
     "imported-members",
 ]
 
+autoapi_member_order = "bysource"
 autoapi_own_page_level = "module"
+autoapi_python_use_implicit_namespaces = True
 
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
@@ -103,7 +105,10 @@ gettext_compact = False
 # Tell myst-parser to assign header anchors for h1-h3.
 myst_heading_anchors = 3
 
-suppress_warnings = ["myst.header"]
+suppress_warnings = [
+    "myst.header",
+    # "ref.python",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

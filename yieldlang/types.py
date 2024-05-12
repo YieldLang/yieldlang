@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Generator,
@@ -9,7 +10,14 @@ from typing import (
     TypeAlias,
 )
 
-from typing_extensions import TypeIs
+if not TYPE_CHECKING:
+    try:
+        from typing import TypeIs
+    except ImportError:
+        from typing_extensions import TypeIs
+else:
+    from typing_extensions import TypeIs
+
 
 EmptyString: Literal[""] = ""
 """Empty string constant."""

@@ -34,7 +34,7 @@ class TextGenerator:
         """Initialize the generator with a sampler."""
         self._sampler: BaseSampler = sampler or BaseSampler.default()
         """The sampler to use for sampling symbols."""
-        self._top_ctx = YContextTree(max_depth=-1, cur_depth=0)
+        self._top_ctx: YContextTree = YContextTree(max_depth=-1, cur_depth=0)
         """The root context for flattening symbols."""
         self._generator: YGenerator = self._iter_symbol(self.top)
         """The generator for the text."""
@@ -101,7 +101,7 @@ class TextGenerator:
 
         Args:
             symbol (Symbol): The symbol to flatten.
-            ctx (FlattenContext): The context for flattening.
+            ctx (YContextTree): The context for flattening.
         """
         ctx = self._new_child_ctx(ctx)
         if ctx.max_depth > -1 and ctx.cur_depth > ctx.max_depth:

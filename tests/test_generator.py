@@ -205,11 +205,11 @@ def test_send_generator():
             yield "EF666"
 
     g = G()
-    assert g._generator.send(None) == "A"
-    assert g._generator.send(None) == "B"
-    assert g._generator.send(None) == "C"
-    assert g._generator.send(None) == "D"
-    assert g._generator.send(None) == EmptyString.join(g.e())
+    assert iter(g).send(None) == "A"
+    assert iter(g).send(None) == "B"
+    assert iter(g).send(None) == "C"
+    assert iter(g).send(None) == "D"
+    assert iter(g).send(None) == EmptyString.join(g.e())
     assert EmptyString.join(g) == "123"
 
 

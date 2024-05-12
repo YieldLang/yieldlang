@@ -36,18 +36,18 @@ class TextGenerator:
         """The sampler to use for sampling symbols."""
         self._top_ctx = YContextTree(max_depth=-1, cur_depth=0)
         """The root context for flattening symbols."""
-        self._generator: YGenerator = self.__iter_symbol(self.top)
-        """The iterator to generate text."""
+        self._generator: YGenerator = self._iter_symbol(self.top)
+        """The generator for the text."""
 
-    def __iter__(self) -> IteratorStr:
-        """Get the iterator."""
+    def __iter__(self) -> YGenerator:
+        """Get the generator."""
         return self._generator
 
     def __next__(self) -> str:
         """Get the next token."""
         return next(self._generator)
 
-    def __iter_symbol(self, symbol: Symbol) -> YGenerator:
+    def _iter_symbol(self, symbol: Symbol) -> YGenerator:
         """Iterate over a symbol."""
         try:
             self._top_ctx.ret_value = []
@@ -103,13 +103,7 @@ class TextGenerator:
             symbol (Symbol): The symbol to flatten.
             ctx (FlattenContext): The context for flattening.
         """
-        child = YContextTree()
-        child.cur_depth = ctx.cur_depth + 1
-        child.max_depth = ctx.max_depth
-        ctx.children.append(child)
-        child.parent = ctx
-        ctx = child
-
+        ctx = self._new_child_ctx(ctx)
         if ctx.max_depth > -1 and ctx.cur_depth > ctx.max_depth:
             ctx.ret_value = symbol
             yield symbol
@@ -139,3 +133,18 @@ class TextGenerator:
             case _:
                 ctx.name = f"Invalid: {symbol}"
                 raise TypeError(f"Invalid symbol: {symbol}")
+
+    def _new_child_ctx(self, parent: YContextTree) -> YContextTree:
+        """Create a new child context.
+
+        Args:
+            parent (YContextTree): The parent context.
+        Returns:
+            YContextTree: The child context.
+        """
+        child = YContextTree()
+        child.cur_depth = parent.cur_depth + 1
+        child.max_depth = parent.max_depth
+        parent.children.append(child)
+        child.parent = parent
+        return child

@@ -113,7 +113,7 @@ ignore_missing_imports = true
 no_site_packages = true
 check_untyped_defs = true
 
-exclude = ["^build/", "^dist/", "^tests/"]
+exclude = ["^build/", "^dist/", "^tests/", "^tmp/"]
 
 [[tool.mypy.overrides]]
 module = "tests.*"

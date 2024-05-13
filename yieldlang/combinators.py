@@ -27,8 +27,8 @@ def select(*symbol: Symbol) -> ProxySymbol:
         ProxySymbol: The proxy symbol that selects a symbol from the set.
     """
 
-    def select(g: TextGenerator, ctx: YContextTree):
-        yield g._sampler.select(g, ctx, *symbol)
+    def select(self: TextGenerator, ctx: YContextTree):
+        yield self._sampler.select(self, ctx, *symbol)
 
     return ProxySymbol(select)
 
@@ -50,7 +50,7 @@ def join(sep: Symbol, to_seq: Symbol, depth: int = -1) -> ProxySymbol:
     Args:
         sep (Symbol): The separator symbol.
         to_seq (Symbol): The symbol to join.
-        depth (int): The maximum depth to flatten. If negative, flatten all symbols.
+        depth (int): The maximum depth to flatten. If negative, flatten all symbols. Defaults to ``-1``.
     Returns:
         ProxySymbol: The joined symbol.
     """

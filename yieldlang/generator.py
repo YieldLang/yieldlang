@@ -30,6 +30,12 @@ class TextGenerator:
         """
         raise NotImplementedError
 
+    def send(self, value: str | None) -> str:
+        self._sampler.inputs.append(value)
+        if self._generator.gi_running:
+            return self._generator.send(value)
+        return next(self._generator)
+
     def __init__(self, sampler: BaseSampler | None = None) -> None:
         """Initialize the generator with a sampler."""
         self._sampler: BaseSampler = sampler or BaseSampler.default()

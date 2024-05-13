@@ -12,7 +12,7 @@ class BaseSampler:
     """Base class for samplers."""
 
     def __init__(self) -> None:
-        self.inputs: list[str | None] = []
+        self.inputs: list[int] = []
 
     @staticmethod
     def default() -> "RandomSampler":
@@ -43,51 +43,40 @@ class RandomSampler(BaseSampler):
 class ParserSampler(BaseSampler):
     def __init__(self) -> None:
         super().__init__()
-        self.pointer = (0, -1)
+        self.pt: int = -1
 
     def select(
         self, g: "TextGenerator", ctx: YContextTree, *symbol: Symbol
     ) -> Symbol:
-        strs = map(str, symbol)  # TODO: Implement first set
-        # print(symbol, self.pointer, self.inputs)
-        for s in strs:
-            p = self.pointer
-            flag = True
-            for c in s:
-                p = yield from self._next_pointer(*p)
-                char = self._char(*p)
-                if char != c:
-                    flag = False
-                    break
-                else:
-                    yield char
-            if flag:
-                self.pointer = p
-                return s
-        raise EOFError
+        while True:
+            strs = map(str, symbol)  # TODO: Implement first set
+            for s in strs:
+                p = self.pt
+                flag = True
+                for c in s:
+                    p = yield from self._next_pt(p)
+                    char = self._char(p)
+                    if char != c:
+                        flag = False
+                        break
+                    else:
+                        yield char
+                if flag:
+                    self.pt = p
+                    return s
+            self.pt = yield from self._next_pt(self.pt)
+            print("Bad Input!!!")
 
-    def _char(self, i: int, j: int) -> str:
+    def _char(self, i: int) -> str:
         s = self.inputs[i]
-        assert s
-        return s[j]
+        return chr(s)
 
     def _cur_char(self) -> str:
-        return self._char(*self.pointer)
+        return self._char(self.pt)
 
-    def _next_pointer(self, i: int, j: int):
+    def _next_pt(self, i: int):
         while True:
-            try:
-                while not self.inputs[i]:
-                    i += 1
-                    j = -1
-                s = self.inputs[i]
-                assert s
-                j += 1
-                if j >= len(s):
-                    i += 1
-                    j = 0
-                while not self.inputs[i]:
-                    i += 1
-                return i, j
-            except IndexError:
+            if i + 1 >= len(self.inputs):
                 yield EmptyString
+            else:
+                return i + 1

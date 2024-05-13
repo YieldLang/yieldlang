@@ -31,7 +31,9 @@ class TextGenerator:
         raise NotImplementedError
 
     def send(self, value: str | None) -> str:
-        self._sampler.inputs.append(value)
+        if value:
+            ords = (ord(c) for c in value)
+            self._sampler.inputs.extend(ords)
         if self._generator.gi_running:
             return self._generator.send(value)
         return next(self._generator)
